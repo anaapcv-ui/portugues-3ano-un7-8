@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulado · Fábrica Mágica das Palavras</title>
+<style>
+  :root{--teal:#0e9e8e;--teal-d:#0a7d70;--red:#e63946;--red-d:#c22c39;--yellow:#ffd23f;
+    --purple:#7b5ea7;--ink:#2b2440;--paper:#fff8ef;--card:#fff;--ok:#1f9d55;--soft:#fdeecf;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Comic Sans MS','Trebuchet MS',Verdana,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+  header{background:linear-gradient(120deg,var(--teal-d),var(--purple));color:#fff;padding:18px 16px;text-align:center}
+  header h1{margin:.2em 0;font-size:1.7rem}
+  .robot{font-size:2.4rem}
+  nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;background:var(--ink);padding:8px}
+  nav a{color:#fff;text-decoration:none;background:rgba(255,255,255,.12);padding:6px 12px;border-radius:20px;font-size:.85rem;font-weight:bold}
+  nav a.active{background:var(--yellow);color:var(--ink)}
+  .wrap{max-width:760px;margin:0 auto;padding:14px}
+  .bar{background:#e7ddcf;border-radius:14px;height:18px;overflow:hidden;margin:10px 0;position:sticky;top:0}
+  .bar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--yellow));transition:width .4s}
+  .counter{text-align:center;font-weight:bold;margin:4px 0}
+  .card{background:var(--card);border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 3px 10px rgba(0,0,0,.08);border:3px solid #eee}
+  .qh{font-weight:bold;font-size:1.08rem;margin-bottom:10px}
+  .opt{display:block;background:#faf7f0;border:2px solid #e3dccb;border-radius:12px;padding:10px 12px;margin:8px 0;cursor:pointer}
+  .opt:hover{border-color:var(--teal)}
+  .opt.sel{border-color:var(--purple);background:#f1ecf8}
+  .opt.right{border-color:var(--ok);background:#e9faf0}
+  .opt.wrong{border-color:var(--red);background:#fdeaec}
+  .opt .why{display:none;font-size:.9rem;margin-top:6px;color:#555}
+  .opt.reveal .why{display:block}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:22px;padding:12px 22px;font-weight:bold;font-size:1.05rem}
+  .btn{background:var(--teal);color:#fff}.btn:disabled{background:#c9c2b5;cursor:not-allowed}
+  .btn-y{background:var(--yellow);color:var(--ink)}
+  .center{text-align:center}
+  .result{background:linear-gradient(120deg,#fff3d6,#e9faf0);border-radius:16px;padding:20px;text-align:center;border:3px dashed var(--teal)}
+  .stars{font-size:1.6rem}
+  .savebar{position:sticky;bottom:0;background:var(--ink);color:#fff;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:8px;font-size:.82rem}
+  .savebar button{padding:6px 12px;font-size:.82rem}
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;align-items:center;justify-content:center}
+  .modal-bg.show{display:flex}
+  .modal{background:#fff;border-radius:16px;padding:20px;max-width:340px;text-align:center}
+  .modal button{margin:8px 6px 0}
+  .toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--ok);color:#fff;padding:10px 18px;border-radius:20px;opacity:0;transition:opacity .3s;z-index:60;font-weight:bold}
+  .toast.show{opacity:1}
+  .tag{display:inline-block;background:var(--soft);border-radius:12px;padding:2px 10px;font-size:.78rem;color:var(--red-d);margin-bottom:6px}
+</style>
+</head>
+<body>
+<header>
+  <div class="robot">🤖📝</div>
+  <h1>📝 Simulado Final</h1>
+  <p>25 questões · Português 3º ano · Unidades 7 e 8</p>
+</header>
+<nav>
+  <a href="index.html">🏠 Início</a>
+  <a href="leitura-guiada.html">📖 Leitura</a>
+  <a href="quiz.html">🎯 Quiz</a>
+  <a href="resumo.html">🗺️ Resumo</a>
+  <a href="simulado.html" class="active">📝 Simulado</a>
+</nav>
+<div class="wrap">
+  <p class="center">Responda com calma, inventor(a)! Você pode voltar e trocar a resposta. No fim, clique em <b>Corrigir</b> para ver o gabarito comentado. 💡</p>
+  <div class="bar"><span id="bar"></span></div>
+  <div class="counter" id="counter">0 / 25 respondidas</div>
+  <div id="quiz"></div>
+  <div class="center"><button class="btn" id="send" onclick="corrigir()" disabled>✅ Corrigir simulado</button></div>
+  <div id="result"></div>
+</div>
+
+<div class="savebar">
+  <span>💾 Salvamento automático</span><span id="stamp">—</span>
+  <button class="btn-y" onclick="exportar()">📥 Exportar</button>
+  <button class="btn-y" onclick="document.getElementById('imp').click()">📤 Importar</button>
+  <input type="file" id="imp" style="display:none" accept="application/json" onchange="importar(event)">
+  <button class="btn" onclick="pedirZerar()">🗑️ Zerar</button>
+</div>
+<div class="modal-bg" id="modalbg"><div class="modal"><p id="modaltext"></p>
+  <button class="btn" id="modalyes">Sim</button><button class="btn-y" onclick="fecharModal()">Não</button></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+var KEY="fabrica_pt3_simulado_v2", SEED=1502, mem={};
+var QS=[
+ {tag:"Anúncio",q:"O anúncio é um texto que serve principalmente para:",o:[
+   {t:"divulgar algo e convencer as pessoas",ok:true,why:"O anúncio divulga um produto, serviço, evento ou ideia e convence."},
+   {t:"contar uma longa história",ok:false,why:"Isso é uma narrativa."},
+   {t:"ensinar uma receita",ok:false,why:"Isso é um texto de receita."},
+   {t:"dar as horas",ok:false,why:"Não é a função do anúncio."}]},
+ {tag:"Anúncio",q:"O público-alvo de um anúncio é:",o:[
+   {t:"o grupo de pessoas para quem o anúncio foi feito",ok:true,why:"É quem o anúncio quer alcançar."},
+   {t:"o dono da loja",ok:false,why:"Esse é quem faz o anúncio, não o público."},
+   {t:"o preço do produto",ok:false,why:"Preço é outra informação."},
+   {t:"a cor das letras",ok:false,why:"Isso é só um detalhe visual."}]},
+ {tag:"Anúncio",q:"Qual afirmação sobre o anúncio é VERDADEIRA?",o:[
+   {t:"Ele pode divulgar produtos, serviços, eventos ou ideias.",ok:true,why:"O anúncio pode divulgar todas essas coisas."},
+   {t:"Todo anúncio só pode ser publicado em jornais.",ok:false,why:"Falso: também aparece na TV, internet, ruas..."},
+   {t:"O anúncio nunca usa imagens.",ok:false,why:"Falso: as imagens ajudam a chamar atenção."},
+   {t:"O anúncio só pode ter números.",ok:false,why:"Falso: usa imagens, frases e informações."}]},
+ {tag:"Anúncio",q:"Uma campanha que ensina a economizar água é um exemplo de:",o:[
+   {t:"campanha de conscientização",ok:true,why:"Ela alerta e ensina sobre algo importante."},
+   {t:"anúncio publicitário",ok:false,why:"O publicitário vende, troca ou aluga algo."},
+   {t:"história em quadrinhos",ok:false,why:"HQ conta uma história com desenhos."},
+   {t:"bilhete",ok:false,why:"Bilhete é um recado curto."}]},
+ {tag:"Grau",q:"O DIMINUTIVO de “flor” é:",o:[
+   {t:"florzinha",ok:true,why:"Diminutivo com -zinha."},
+   {t:"florão",ok:false,why:"Esse é o aumentativo."},
+   {t:"flores",ok:false,why:"Esse é o plural."},
+   {t:"flora",ok:false,why:"Flora é outro nome, não diminutivo."}]},
+ {tag:"Grau",q:"O AUMENTATIVO de “menino” é:",o:[
+   {t:"meninão",ok:true,why:"Aumentativo com -ão."},
+   {t:"menininho",ok:false,why:"Esse é o diminutivo."},
+   {t:"meninos",ok:false,why:"Esse é o plural."},
+   {t:"menina",ok:false,why:"Esse é o feminino."}]},
+ {tag:"Grau",q:"A palavra “gatinho” é:",o:[
+   {t:"diminutivo (D)",ok:true,why:"Termina em -inho: indica algo pequeno."},
+   {t:"aumentativo (A)",ok:false,why:"Aumentativo termina em -ão (gatão)."},
+   {t:"plural",ok:false,why:"Plural seria gatos."},
+   {t:"feminino",ok:false,why:"Feminino seria gata."}]},
+ {tag:"Gênero",q:"O FEMININO de “aluno” é:",o:[
+   {t:"aluna",ok:true,why:"Troca-se o -o por -a."},
+   {t:"alunão",ok:false,why:"Esse é o aumentativo."},
+   {t:"alunos",ok:false,why:"Esse é o plural."},
+   {t:"aluninho",ok:false,why:"Esse é o diminutivo."}]},
+ {tag:"Gênero",q:"Qual palavra é do gênero MASCULINO?",o:[
+   {t:"o cavalo",ok:true,why:"Vem com “o”: masculino."},
+   {t:"a égua",ok:false,why:"Vem com “a”: feminino."},
+   {t:"a vaca",ok:false,why:"Vem com “a”: feminino."},
+   {t:"a galinha",ok:false,why:"Vem com “a”: feminino."}]},
+ {tag:"Gênero",q:"As formas “o dentista” e “a dentista” mostram que a palavra dentista:",o:[
+   {t:"serve para os dois gêneros; muda só o artigo",ok:true,why:"É comum de dois gêneros."},
+   {t:"é só masculina",ok:false,why:"Errado: também pode ser a dentista."},
+   {t:"é só feminina",ok:false,why:"Errado: também pode ser o dentista."},
+   {t:"está no plural",ok:false,why:"Continua no singular."}]},
+ {tag:"Número",q:"O PLURAL de “jornal” é:",o:[
+   {t:"jornais",ok:true,why:"Palavras em -al trocam para -ais."},
+   {t:"jornals",ok:false,why:"Não fica assim em português."},
+   {t:"jornales",ok:false,why:"Não é essa a forma."},
+   {t:"jornalzinho",ok:false,why:"Esse é o diminutivo."}]},
+ {tag:"Número",q:"O PLURAL de “luz” é:",o:[
+   {t:"luzes",ok:true,why:"Palavras em -z ganham -es."},
+   {t:"luz",ok:false,why:"Continua no singular."},
+   {t:"luzs",ok:false,why:"Não existe esse plural."},
+   {t:"luzinha",ok:false,why:"Esse é o diminutivo."}]},
+ {tag:"Número",q:"Passe para o SINGULAR: “casas”.",o:[
+   {t:"casa",ok:true,why:"Tira-se o -s: uma só casa."},
+   {t:"casas",ok:false,why:"Assim continua no plural."},
+   {t:"casinha",ok:false,why:"Esse é o diminutivo."},
+   {t:"casarão",ok:false,why:"Esse é o aumentativo."}]},
+ {tag:"Ortografia",q:"O DIMINUTIVO de “princesa” é:",o:[
+   {t:"princesinha",ok:true,why:"Princesa já tem S, então mantém o S."},
+   {t:"princezinha",ok:false,why:"Errado: como já há S, não se usa Z."},
+   {t:"princesona",ok:false,why:"Isso é aumentativo."},
+   {t:"princesas",ok:false,why:"Isso é plural."}]},
+ {tag:"Ortografia",q:"O DIMINUTIVO de “pé” é:",o:[
+   {t:"pezinho",ok:true,why:"Pé não tem S, então usa Z."},
+   {t:"pesinho",ok:false,why:"Errado: não há S na palavra pé."},
+   {t:"peizinho",ok:false,why:"Não é assim que se escreve."},
+   {t:"pèzinho",ok:false,why:"Esse acento está errado."}]},
+ {tag:"Ç/S/SS",q:"Complete: “can__ão” (uma música).",o:[
+   {t:"canção (Ç)",ok:true,why:"O Ç tem som de S antes de A, O, U."},
+   {t:"cansão (S)",ok:false,why:"Aqui o som pede Ç, não S."},
+   {t:"cançsão",ok:false,why:"Não existe essa forma."},
+   {t:"canssão (SS)",ok:false,why:"SS fica entre vogais; aqui é Ç."}]},
+ {tag:"Ç/S/SS",q:"Qual palavra está escrita CORRETAMENTE?",o:[
+   {t:"professora",ok:true,why:"Usa-se SS entre duas vogais."},
+   {t:"profesora",ok:false,why:"Falta um S: é com SS."},
+   {t:"profeçora",ok:false,why:"Aqui não se usa Ç."},
+   {t:"profezora",ok:false,why:"Não é com Z."}]},
+ {tag:"Ç/S/SS",q:"Complete com a letra certa: “cabe__a” (parte do corpo).",o:[
+   {t:"cabeça (Ç)",ok:true,why:"Som de S antes de A: usa-se Ç."},
+   {t:"cabessa (SS)",ok:false,why:"Aqui o certo é Ç, não SS."},
+   {t:"cabesa (S)",ok:false,why:"O som pede Ç."},
+   {t:"cabeza (Z)",ok:false,why:"Não é com Z em português."}]},
+ {tag:"Pontuação",q:"Qual sinal completa “Você vai à festa amanhã__”?",o:[
+   {t:"ponto de interrogação ( ? )",ok:true,why:"É uma pergunta."},
+   {t:"ponto final ( . )",ok:false,why:"O ponto final não mostra pergunta."},
+   {t:"ponto de exclamação ( ! )",ok:false,why:"O ( ! ) mostra emoção, não pergunta."},
+   {t:"vírgula ( , )",ok:false,why:"A vírgula não fecha a frase."}]},
+ {tag:"Pontuação",q:"Qual sinal combina com “Parabéns pelo seu aniversário__”?",o:[
+   {t:"ponto de exclamação ( ! )",ok:true,why:"Mostra alegria e emoção."},
+   {t:"ponto de interrogação ( ? )",ok:false,why:"Não é uma pergunta."},
+   {t:"ponto final ( . )",ok:false,why:"Aqui há emoção; combina o ( ! )."},
+   {t:"dois-pontos ( : )",ok:false,why:"Não é o sinal usado aqui."}]},
+ {tag:"Pontuação",q:"Para que serve a vírgula ( , )?",o:[
+   {t:"fazer uma pequena pausa e separar itens de uma lista",ok:true,why:"Ex.: Comprei pão, leite e ovos."},
+   {t:"mostrar que a frase terminou",ok:false,why:"Isso é o ponto final."},
+   {t:"indicar uma pergunta",ok:false,why:"Isso é o ponto de interrogação."},
+   {t:"mostrar muita emoção",ok:false,why:"Isso é o ponto de exclamação."}]},
+ {tag:"Verbos",q:"Em “Eu cantei uma música”, o verbo está no tempo:",o:[
+   {t:"passado",ok:true,why:"A ação já aconteceu (cantei)."},
+   {t:"presente",ok:false,why:"Presente seria “canto”."},
+   {t:"futuro",ok:false,why:"Futuro seria “cantarei”."},
+   {t:"nenhum",ok:false,why:"Todo verbo tem um tempo."}]},
+ {tag:"Verbos",q:"Em “Ela escreve uma carta”, o verbo está no tempo:",o:[
+   {t:"presente",ok:true,why:"A ação acontece agora (escreve)."},
+   {t:"passado",ok:false,why:"Passado seria “escreveu”."},
+   {t:"futuro",ok:false,why:"Futuro seria “escreverá”."},
+   {t:"nenhum",ok:false,why:"Todo verbo tem um tempo."}]},
+ {tag:"Verbos",q:"Complete: “Amanhã eles ______ ao museu.” (visitar)",o:[
+   {t:"visitarão",ok:true,why:"“Amanhã” + eles pede o futuro: visitarão."},
+   {t:"visitaram",ok:false,why:"Esse é o passado (ontem)."},
+   {t:"visitam",ok:false,why:"Esse é o presente (hoje)."},
+   {t:"visitar",ok:false,why:"Essa é a forma sem tempo (infinitivo)."}]},
+ {tag:"Verbos",q:"O verbo pode indicar um FENÔMENO DA NATUREZA, como:",o:[
+   {t:"chover",ok:true,why:"Chover é um fenômeno da natureza (verbo)."},
+   {t:"cadeira",ok:false,why:"É um substantivo."},
+   {t:"bonito",ok:false,why:"É um adjetivo."},
+   {t:"rápido",ok:false,why:"Não é um verbo."}]}
+];
+
+var order=[], state={sel:{},done:false};
+function rng(s){var x=s;return function(){x=(x*9301+49297)%233280;return x/233280;};}
+function shuffle(a,seed){var r=rng(seed),b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(r()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+function load(){var raw=null;try{raw=localStorage.getItem(KEY);}catch(e){raw=mem[KEY];}
+  if(raw){try{state=JSON.parse(raw);}catch(e){}} if(!state.sel)state.sel={};}
+function save(){var raw=JSON.stringify(state);try{localStorage.setItem(KEY,raw);}catch(e){mem[KEY]=raw;}
+  var d=new Date();document.getElementById('stamp').textContent="salvo "+d.toLocaleDateString('pt-BR')+" "+d.toLocaleTimeString('pt-BR').slice(0,5);}
+function build(){
+  order=[]; var qorder=shuffle(QS.map(function(_,i){return i;}),SEED);
+  var host=document.getElementById('quiz');host.innerHTML="";
+  qorder.forEach(function(qi,pos){
+    var Q=QS[qi]; var opts=shuffle(Q.o.map(function(_,k){return k;}),SEED+qi*3+5);
+    order.push({qi:qi,opts:opts});
+    var html='<div class="card" id="c'+pos+'"><div class="tag">'+Q.tag+'</div><div class="qh">'+(pos+1)+'. '+Q.q+'</div>';
+    opts.forEach(function(ok,oi){var letter=String.fromCharCode(65+oi);var chosen=(state.sel[pos]===oi)?" sel":"";
+      html+='<label class="opt'+chosen+'" id="o'+pos+'_'+oi+'" onclick="pick('+pos+','+oi+')"><b>'+letter+')</b> '+Q.o[ok].t+'<div class="why"></div></label>';});
+    html+='</div>'; host.innerHTML+=html;
+  });
+  for(var p in state.sel){var el=document.getElementById('o'+p+'_'+state.sel[p]);if(el)el.classList.add('sel');}
+  updateBar();
+}
+function pick(pos,oi){if(state.done)return;
+  for(var k=0;k<4;k++){var e=document.getElementById('o'+pos+'_'+k);if(e)e.classList.remove('sel');}
+  document.getElementById('o'+pos+'_'+oi).classList.add('sel');state.sel[pos]=oi;save();updateBar();}
+function updateBar(){var n=Object.keys(state.sel).length;
+  document.getElementById('bar').style.width=(n/QS.length*100)+"%";
+  document.getElementById('counter').textContent=n+" / "+QS.length+" respondidas";
+  document.getElementById('send').disabled=(n<QS.length)||state.done;}
+function corrigir(){
+  state.done=true;save();var acertos=0;
+  order.forEach(function(o,pos){var Q=QS[o.qi];var sel=state.sel[pos];
+    o.opts.forEach(function(ok,oi){var el=document.getElementById('o'+pos+'_'+oi);
+      el.classList.add('reveal');el.querySelector('.why').textContent=Q.o[ok].why;
+      if(Q.o[ok].ok)el.classList.add('right');
+      if(oi===sel&&!Q.o[ok].ok)el.classList.add('wrong');});
+    var chosen=o.opts[sel];if(chosen!==undefined&&Q.o[chosen].ok)acertos++;});
+  var pct=Math.round(acertos/QS.length*100);
+  var msg=pct>=80?"🏆 Uau! Você está pronto(a) para a prova!":pct>=50?"💪 Muito bom! Revise os errinhos.":"🌱 Vamos treinar mais! Volte à Leitura e ao Resumo.";
+  var stars=pct>=80?"⭐⭐⭐":pct>=50?"⭐⭐":"⭐";
+  document.getElementById('send').disabled=true;
+  var r=document.getElementById('result');
+  r.innerHTML='<div class="result"><h2>'+msg+'</h2><div class="stars">'+stars+'</div>'+
+    '<p style="font-size:1.3rem"><b>'+acertos+' de '+QS.length+'</b> ('+pct+'%)</p>'+
+    '<p>Suba a página para ver o gabarito: resposta certa em <span style="color:var(--ok)"><b>verde</b></span> e o porquê de cada uma.</p>'+
+    '<button class="btn-y" onclick="scrollTo({top:0,behavior:\'smooth\'})">🔍 Ver gabarito</button></div>';
+  r.scrollIntoView({behavior:'smooth'});
+}
+function exportar(){var b=new Blob([JSON.stringify(state)],{type:"application/json"});var a=document.createElement('a');
+  a.href=URL.createObjectURL(b);a.download="simulado_portugues_3ano.json";a.click();toast("📥 Exportado!");}
+function importar(ev){var f=ev.target.files[0];if(!f)return;var r=new FileReader();
+  r.onload=function(){try{state=JSON.parse(r.result);save();location.reload();}catch(e){toast("❌ Arquivo inválido");}};r.readAsText(f);}
+function pedirZerar(){document.getElementById('modaltext').textContent="Quer mesmo apagar suas respostas do Simulado?";
+  document.getElementById('modalyes').onclick=doZerar;document.getElementById('modalbg').classList.add('show');}
+function fecharModal(){document.getElementById('modalbg').classList.remove('show');}
+function doZerar(){state={sel:{},done:false};save();fecharModal();location.reload();}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
+load();build();if(state.done){corrigir();}
+</script>
+</body>
+</html>
