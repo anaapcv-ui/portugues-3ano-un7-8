@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gabarito · Simulado · Detetives das Palavras · Português 3º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--roxo:#6c4bd8;--roxo2:#8a6bf0;--amarelo:#ffd23f;--laranja:#ff8c42;--azul:#3fa9e8;--verde:#1f9d55;--ink:#2b2440;--dim:#7a6f92;--red:#ef5a6f}
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#efeafc,#f6f2ff);font-family:'Nunito',system-ui,sans-serif;color:var(--ink);line-height:1.5;padding-bottom:70px}
+  h1,h2,h3,.baloo{font-family:'Baloo 2','Nunito',sans-serif}
+  header{background:linear-gradient(120deg,#6c4bd8,#8a6bf0);color:#fff;padding:18px 16px;border-bottom:6px solid var(--amarelo);box-shadow:0 6px 0 #4b2fa8}
+  .wrap{max-width:820px;margin:0 auto;padding:0 16px}
+  .titlerow{display:flex;align-items:center;gap:14px}.m{font-size:2.4rem}
+  h1{margin:0;font-size:1.5rem;text-shadow:0 2px 0 rgba(0,0,0,.15)}.sub{font-size:.92rem;opacity:.95}
+  .hint{background:#fff;border:3px dashed var(--roxo2);border-radius:16px;padding:12px 16px;margin:18px 0}
+  .hint b{color:var(--roxo)}
+  h2.sec{color:var(--roxo);margin:22px 0 10px;font-size:1.3rem}
+  .keygrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px;margin:10px 0}
+  .key{background:#fff;border:3px solid var(--roxo2);border-radius:12px;padding:6px;text-align:center;font-weight:800}
+  .key b{color:var(--roxo);font-family:'Baloo 2';font-size:1.2rem;display:block}
+  .item{background:#fff;border-radius:16px;border:3px solid #e7defc;box-shadow:0 4px 0 rgba(0,0,0,.06);padding:14px 16px;margin:12px 0}
+  .item .qn{color:var(--dim);font-weight:800}
+  .item .qt{font-family:'Baloo 2';font-size:1.08rem;margin:3px 0 8px}
+  .correct{background:#e7fbee;border:3px solid var(--verde);border-radius:12px;padding:9px 12px;font-weight:800;color:#1a6b3c}
+  .correct .lt{background:var(--verde);color:#fff;border-radius:8px;padding:1px 8px;margin-right:8px;font-family:'Baloo 2'}
+  .dica{background:#fff7c2;border:2px solid var(--amarelo);border-radius:10px;padding:9px 12px;margin-top:8px;box-shadow:2px 3px 0 rgba(0,0,0,.1)}
+  .dica b{color:var(--laranja)}
+  .savebar{position:fixed;bottom:0;left:0;right:0;background:#ffffffee;border-top:3px solid var(--roxo2);padding:8px 14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  a.nav{background:var(--roxo);color:#fff;border-radius:12px;padding:9px 16px;font-family:'Baloo 2';text-decoration:none;box-shadow:0 3px 0 #4b2fa8}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="titlerow"><div class="m">🕵️</div><div>
+    <h1>Gabarito Comentado — Simulado</h1>
+    <div class="sub">Português · 3º ano · para conferir com um adulto 💜</div>
+  </div></div>
+</div></header>
+
+<div class="wrap">
+  <div class="hint">🕵️ <b>Detetive Turbo:</b> aqui estão as respostas certas <b>em verde</b> e uma <b>dica amarela</b> em cada pergunta. Confira junto com um adulto e comemore os acertos! 🎉</div>
+
+  <h2 class="sec">✅ Tabela rápida de respostas</h2>
+  <div class="keygrid" id="keygrid"></div>
+
+  <h2 class="sec">📝 Explicação de cada pergunta</h2>
+  <div id="items"></div>
+</div>
+
+<div class="savebar">
+  <a class="nav" href="simulado.html">📝 Voltar ao Simulado</a>
+  <a class="nav" href="index.html">⌂ Início</a>
+</div>
+
+<script>
+const G=[
+ ["O anúncio é um texto que serve principalmente para:",["divulgar algo e convencer as pessoas","contar uma longa história","ensinar uma receita","dar as horas"],0,"O anúncio divulga um produto, serviço, evento ou ideia e convence as pessoas."],
+ ["O público-alvo de um anúncio é:",["o dono da loja","o preço do produto","o grupo de pessoas para quem o anúncio foi feito","a cor das letras"],2,"Público-alvo é quem o anúncio quer alcançar (ex.: brinquedo → crianças)."],
+ ["Qual afirmação sobre o anúncio é VERDADEIRA?",["Só pode ser publicado em jornais","Ele pode divulgar produtos, serviços, eventos ou ideias","Nunca usa imagens","Só pode ter números"],1,"O anúncio pode divulgar muitas coisas e aparece na TV, internet, ruas..."],
+ ["Uma campanha que ensina a economizar água é:",["um anúncio publicitário","uma história em quadrinhos","um bilhete","uma campanha de conscientização"],3,"A campanha de conscientização ensina ou alerta — não vende."],
+ ["O DIMINUTIVO de “flor” é:",["florão","flores","florzinha","flora"],2,"Diminutivo com -zinha: florzinha. florão é aumentativo; flores é plural."],
+ ["O AUMENTATIVO de “menino” é:",["meninão","menininho","meninos","menina"],0,"Aumentativo com -ão: meninão."],
+ ["A palavra “gatinho” está no:",["aumentativo","plural","feminino","diminutivo"],3,"Termina em -inho: indica algo pequeno (diminutivo)."],
+ ["O FEMININO de “aluno” é:",["alunão","aluna","alunos","aluninho"],1,"Troca-se o -o por -a: aluna."],
+ ["Qual palavra é do gênero MASCULINO?",["o cavalo","a égua","a vaca","a galinha"],0,"Vem com “o”: masculino. As outras vêm com “a” (feminino)."],
+ ["As formas “o dentista” e “a dentista” mostram que a palavra:",["é só masculina","é só feminina","serve para os dois gêneros; muda só o artigo","está no plural"],2,"É comum de dois gêneros: muda só o artiguinho."],
+ ["O PLURAL de “jornal” é:",["jornals","jornales","jornalzinho","jornais"],3,"Palavras em -al trocam para -ais: jornais."],
+ ["O PLURAL de “luz” é:",["luz","luzes","luzs","luzinha"],1,"Palavras terminadas em -z ganham -es: luzes."],
+ ["Passe para o SINGULAR: “casas”.",["casa","casas","casinha","casarão"],0,"Tira-se o -s: uma só casa."],
+ ["O DIMINUTIVO de “princesa” é:",["princezinha","princesona","princesinha","princesas"],2,"Princesa já tem S, então o diminutivo mantém o S: princesinha."],
+ ["O DIMINUTIVO de “pé” é:",["pesinho","peizinho","pèzinho","pezinho"],3,"Pé não tem S na última sílaba, então usa Z: pezinho."],
+ ["Complete: “can__ão” (uma música).",["cansão (S)","canção (Ç)","canssão (SS)","cansção"],1,"O Ç tem som de S antes de A, O, U: canção."],
+ ["Qual palavra está escrita CORRETAMENTE?",["professora","profesora","profeçora","profezora"],0,"Usa-se SS entre duas vogais: professora."],
+ ["Complete: “cabe__a” (parte do corpo).",["cabessa (SS)","cabesa (S)","cabeça (Ç)","cabeza (Z)"],2,"Som de S antes de A: usa-se Ç → cabeça."],
+ ["Qual sinal completa “Você vai à festa amanhã__”?",["ponto final ( . )","ponto de exclamação ( ! )","vírgula ( , )","ponto de interrogação ( ? )"],3,"É uma pergunta, então usa-se o ponto de interrogação."],
+ ["Qual sinal combina com “Parabéns pelo seu aniversário__”?",["ponto de interrogação ( ? )","ponto de exclamação ( ! )","ponto final ( . )","dois-pontos ( : )"],1,"Mostra alegria e emoção: ponto de exclamação."],
+ ["Para que serve a vírgula ( , )?",["mostrar que a frase terminou","indicar uma pergunta","fazer uma pausa e separar itens de uma lista","mostrar muita emoção"],2,"Ex.: Comprei pão, leite e ovos."],
+ ["Em “Eu cantei uma música”, o verbo está no tempo:",["passado","presente","futuro","nenhum"],0,"A ação já aconteceu (cantei): passado."],
+ ["Em “Ela escreve uma carta”, o verbo está no tempo:",["passado","presente","futuro","nenhum"],1,"A ação acontece agora (escreve): presente."],
+ ["Complete: “Amanhã eles ______ ao museu.” (visitar)",["visitaram","visitam","visitar","visitarão"],3,"“Amanhã” pede o futuro: visitarão."],
+ ["O verbo pode indicar um FENÔMENO DA NATUREZA, como:",["cadeira","bonito","chover","rápido"],2,"Chover é um fenômeno da natureza (verbo). Cadeira é substantivo; bonito é adjetivo."]
+];
+const kg=document.getElementById('keygrid');
+G.forEach((g,i)=>{const d=document.createElement('div');d.className='key';d.innerHTML=`${i+1}<b>${'ABCD'[g[2]]}</b>`;kg.appendChild(d);});
+const it=document.getElementById('items');
+G.forEach((g,i)=>{
+  const d=document.createElement('div');d.className='item';
+  d.innerHTML=`<div class="qn">Pergunta ${i+1}</div><div class="qt">${g[0]}</div>
+    <div class="correct"><span class="lt">${'ABCD'[g[2]]}</span>${g[1][g[2]]}</div>
+    <div class="dica">💡 <b>Dica:</b> ${g[3]}</div>`;
+  it.appendChild(d);
+});
+</script>
+</body>
+</html>
