@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fábrica Mágica das Palavras · Português 3º ano</title>
+<style>
+  :root{--teal:#0e9e8e;--teal-d:#0a7d70;--red:#e63946;--red-d:#c22c39;--yellow:#ffd23f;
+    --purple:#7b5ea7;--ink:#2b2440;--paper:#fff8ef;--card:#fff;--ok:#1f9d55;--soft:#fdeecf;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Comic Sans MS','Trebuchet MS',Verdana,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55}
+  .hero{background:linear-gradient(120deg,var(--teal),var(--red));color:#fff;padding:26px 16px 30px;text-align:center;position:relative;overflow:hidden}
+  .hero .g{position:absolute;font-size:2.4rem;opacity:.22}
+  .hero .robot{font-size:3.4rem}
+  .hero h1{margin:.15em 0;font-size:2rem;text-shadow:1px 2px 0 rgba(0,0,0,.18)}
+  .hero p{margin:.2em 0;font-size:1.05rem}
+  .datebadge{display:inline-block;background:var(--yellow);color:var(--ink);font-weight:bold;border-radius:20px;padding:6px 16px;margin-top:8px}
+  .wrap{max-width:820px;margin:0 auto;padding:16px}
+  .panel{background:var(--card);border-radius:16px;padding:16px 18px;margin:14px 0;box-shadow:0 3px 10px rgba(0,0,0,.08)}
+  .panel h2{color:var(--red-d);margin-top:.2em}
+  .panel ul{margin:.4em 0}
+  .panel li{margin:5px 0}
+  .trail{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-weight:bold;color:var(--teal-d)}
+  .trail span{background:var(--soft);border-radius:20px;padding:6px 14px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:8px}
+  a.mcard{display:block;text-decoration:none;color:var(--ink);background:var(--card);border-radius:18px;padding:18px;
+    box-shadow:0 4px 12px rgba(0,0,0,.1);border:3px solid #eee;transition:transform .15s}
+  a.mcard:hover{transform:translateY(-4px)}
+  a.mcard .ic{font-size:2.2rem}
+  a.mcard h3{margin:.3em 0}
+  a.mcard.c1{border-top:8px solid var(--red)} a.mcard.c2{border-top:8px solid var(--purple)}
+  a.mcard.c3{border-top:8px solid #e07a1f} a.mcard.c4{border-top:8px solid var(--teal)}
+  .step{display:inline-block;background:var(--yellow);color:var(--ink);border-radius:50%;width:26px;height:26px;text-align:center;line-height:26px;font-weight:bold;margin-right:6px}
+  .foot{text-align:center;padding:22px;color:var(--purple);font-weight:bold}
+</style>
+</head>
+<body>
+<div class="hero">
+  <span class="g" style="top:10px;left:14px">⚙️</span>
+  <span class="g" style="bottom:8px;right:18px">⚙️</span>
+  <span class="g" style="top:20px;right:40px">✨</span>
+  <div class="robot">🤖🏭</div>
+  <h1>Fábrica Mágica das Palavras</h1>
+  <p>Kit de estudos · Português · 3º ano</p>
+  <p style="font-size:.95rem">Unidade 7 (Anúncio e Substantivos) + Unidade 8 (Verbos)</p>
+  <div class="datebadge">📅 Prova: 01/09 (terça-feira)</div>
+</div>
+
+<div class="wrap">
+  <div class="panel">
+    <h2>🎒 O que vai cair na prova</h2>
+    <ul>
+      <li>📣 <b>Anúncio</b> — texto que serve para convencer (publicitário × campanha de conscientização).</li>
+      <li>⚙️ <b>Grau do substantivo</b> — aumentativo (-ão) e diminutivo (-inho/-inha).</li>
+      <li>🚻 <b>Gênero do substantivo</b> — masculino e feminino.</li>
+      <li>🔢 <b>Número do substantivo</b> — singular e plural.</li>
+      <li>✏️ <b>Ortografia</b> — diminutivo com -inho, -zinho ou -sinho.</li>
+      <li>🏃 <b>Verbos</b> — ação, tempo (presente/passado/futuro) e pessoa.</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h2>🚀 Trilha de estudo sugerida</h2>
+    <div class="trail">
+      <span>1️⃣ Leitura Guiada</span> ➡️ <span>2️⃣ Quiz</span> ➡️ <span>3️⃣ Resumo</span> ➡️ <span>4️⃣ Simulado</span>
+    </div>
+    <p style="text-align:center;font-size:.95rem;margin-top:10px">Leia com calma, teste no Quiz, feche as dúvidas no Resumo e treine no Simulado! 💪</p>
+  </div>
+
+  <div class="cards">
+    <a class="mcard c1" href="leitura-guiada.html"><div class="ic">📖</div><h3><span class="step">1</span>Leitura Guiada</h3><p>Aprenda o conteúdo bloco por bloco, escrevendo suas respostas.</p></a>
+    <a class="mcard c2" href="quiz.html"><div class="ic">🎯</div><h3><span class="step">2</span>Quiz</h3><p>13 perguntas rápidas com gabarito comentado.</p></a>
+    <a class="mcard c3" href="resumo.html"><div class="ic">🗺️</div><h3><span class="step">3</span>Resumo</h3><p>Cartões, cola da prova e mini-quiz relâmpago.</p></a>
+    <a class="mcard c4" href="simulado.html"><div class="ic">📝</div><h3><span class="step">4</span>Simulado</h3><p>25 questões estilo prova, com correção explicada.</p></a>
+  </div>
+
+  <div class="panel" style="margin-top:16px">
+    <h2>💡 Como usar este material</h2>
+    <ul>
+      <li>Faça na ordem: <b>Leitura Guiada → Quiz → Resumo → Simulado</b>.</li>
+      <li>Seu progresso é <b>salvo sozinho</b> no aparelho. Dá para exportar e importar.</li>
+      <li>Não precisa de senha nem de código. É só clicar e estudar! 😄</li>
+    </ul>
+  </div>
+
+  <div class="foot">🤖 Feito com carinho pela Fábrica Mágica das Palavras · Boa prova, jovem inventor(a)! ⭐</div>
+</div>
+</body>
+</html>
