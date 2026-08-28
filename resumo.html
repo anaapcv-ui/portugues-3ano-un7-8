@@ -3,118 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resumo · Fábrica Mágica das Palavras</title>
+<title>Resumo Final · Detetives das Palavras · Português 3º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{--teal:#0e9e8e;--teal-d:#0a7d70;--red:#e63946;--red-d:#c22c39;--yellow:#ffd23f;
-    --purple:#7b5ea7;--ink:#2b2440;--paper:#fff8ef;--card:#fff;--ok:#1f9d55;--soft:#fdeecf;}
+  :root{--roxo:#6c4bd8;--roxo2:#8a6bf0;--lil:#efeafc;--amarelo:#ffd23f;--laranja:#ff8c42;--azul:#3fa9e8;--rosa:#ff7eb6;--verde:#1f9d55;--ink:#2b2440;--dim:#7a6f92;--red:#ef5a6f}
   *{box-sizing:border-box}
-  body{margin:0;font-family:'Comic Sans MS','Trebuchet MS',Verdana,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
-  header{background:linear-gradient(120deg,var(--red),var(--yellow));color:#fff;padding:18px 16px;text-align:center}
-  header h1{margin:.2em 0;font-size:1.7rem;text-shadow:1px 2px 0 rgba(0,0,0,.15)}
-  .robot{font-size:2.4rem}
-  nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;background:var(--ink);padding:8px}
-  nav a{color:#fff;text-decoration:none;background:rgba(255,255,255,.12);padding:6px 12px;border-radius:20px;font-size:.85rem;font-weight:bold}
-  nav a.active{background:var(--yellow);color:var(--ink)}
-  .wrap{max-width:820px;margin:0 auto;padding:14px}
-  h2.sec{color:var(--red-d);border-bottom:3px dashed var(--yellow);padding-bottom:4px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-  .kcard{background:var(--card);border-radius:14px;padding:12px 14px;box-shadow:0 3px 8px rgba(0,0,0,.08);border-top:6px solid var(--teal)}
-  .kcard.p{border-top-color:var(--purple)} .kcard.r{border-top-color:var(--red)}
-  .kcard.o{border-top-color:#e07a1f} .kcard.b{border-top-color:#2f8fd4} .kcard.g{border-top-color:var(--ok)}
-  .kcard.y{border-top-color:#c9a227} .kcard.pk{border-top-color:#d4457e}
-  .kcard h3{margin:.1em 0;font-size:1.05rem}
-  .kcard p{margin:.3em 0;font-size:.95rem}
-  .ex{background:#eef7f5;border-radius:8px;padding:4px 8px;font-size:.9rem;display:inline-block;margin-top:4px}
-  .postit{background:var(--yellow);border-radius:8px;padding:12px 14px;margin:10px 0;box-shadow:2px 3px 6px rgba(0,0,0,.15);transform:rotate(-1deg);font-weight:bold}
-  .postit:nth-child(even){transform:rotate(1deg);background:#ffe97a}
-  .flash{background:var(--card);border-radius:12px;padding:12px 14px;margin:8px 0;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.08);border-left:6px solid var(--purple)}
-  .flash .a{display:none;margin-top:8px;color:var(--teal-d);font-weight:bold}
-  .flash.open .a{display:block}
-  .flash .q{font-weight:bold}
-  .cta{text-align:center;margin:20px 0}
-  button{font-family:inherit;cursor:pointer;border:none;border-radius:22px;padding:12px 22px;font-weight:bold;font-size:1.05rem;background:var(--teal);color:#fff}
-  .savebar{position:sticky;bottom:0;background:var(--ink);color:#fff;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:8px;font-size:.82rem}
-  .savebar button{padding:6px 12px;font-size:.82rem;background:var(--yellow);color:var(--ink)}
-  .toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--ok);color:#fff;padding:10px 18px;border-radius:20px;opacity:0;transition:opacity .3s;z-index:60;font-weight:bold}
-  .toast.show{opacity:1}
+  body{margin:0;background:linear-gradient(180deg,#efeafc,#f6f2ff);font-family:'Nunito',system-ui,sans-serif;color:var(--ink);line-height:1.5;padding-bottom:70px}
+  h1,h2,h3,.baloo{font-family:'Baloo 2','Nunito',sans-serif}
+  header{background:linear-gradient(120deg,#6c4bd8,#8a6bf0);color:#fff;padding:18px 16px;border-bottom:6px solid var(--amarelo);box-shadow:0 6px 0 #4b2fa8}
+  .wrap{max-width:900px;margin:0 auto;padding:0 16px}
+  .titlerow{display:flex;align-items:center;gap:14px}.m{font-size:2.6rem}
+  h1{margin:0;font-size:1.7rem;text-shadow:0 2px 0 rgba(0,0,0,.15)}.sub{font-size:.95rem;opacity:.95}
+  h2.sec{color:var(--roxo);margin:26px 0 10px;font-size:1.4rem;display:flex;align-items:center;gap:8px}
+  .flow{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;justify-content:center;margin:12px 0}
+  .fstep{flex:1;min-width:130px;background:#fff;border-radius:16px;border:3px solid var(--roxo2);box-shadow:0 4px 0 rgba(0,0,0,.07);padding:12px 10px;text-align:center}
+  .fstep .em{font-size:1.9rem}
+  .fstep b{display:block;color:var(--roxo);font-family:'Baloo 2';margin-top:4px}
+  .fstep small{color:var(--dim);font-size:.85rem}
+  .fstep:nth-child(2){border-color:var(--laranja)} .fstep:nth-child(2) b{color:var(--laranja)}
+  .fstep:nth-child(3){border-color:var(--azul)} .fstep:nth-child(3) b{color:var(--azul)}
+  .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+  .word{background:#fff;border-radius:16px;border:3px solid #e7defc;border-left:8px solid var(--roxo2);padding:12px 14px;box-shadow:0 4px 0 rgba(0,0,0,.06)}
+  .word b{color:var(--roxo);font-family:'Baloo 2';font-size:1.08rem}
+  .word span{display:block;margin-top:2px}
+  .postits{display:flex;flex-wrap:wrap;gap:12px}
+  .postit{background:#fff7c2;border:2px solid var(--amarelo);border-radius:10px;padding:12px 14px;box-shadow:3px 4px 0 rgba(0,0,0,.12);flex:1;min-width:220px;transform:rotate(-1.2deg);font-weight:700}
+  .postit:nth-child(even){background:#e7defc;border-color:var(--roxo2);transform:rotate(1.2deg)}
+  .postit b{color:var(--laranja)}
+  .flash{background:#fff;border-radius:16px;border:3px solid var(--azul);padding:8px 14px;margin:8px 0;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.06)}
+  .flash .q{font-weight:800}
+  .flash .a{display:none;margin-top:6px;color:var(--verde);font-weight:800}
+  .flash.open .a{display:block;animation:pop .3s}
+  @keyframes pop{from{opacity:0}to{opacity:1}}
+  .flash .tap{float:right;color:var(--azul);font-weight:800}
+  .playbtn{display:block;width:100%;margin:22px 0 6px;background:linear-gradient(120deg,var(--laranja),var(--amarelo));color:#5a3d00;border:none;border-radius:18px;padding:18px;font-family:'Baloo 2';font-size:1.4rem;cursor:pointer;box-shadow:0 6px 0 #c56a1f}
+  .playbtn:hover{transform:translateY(-2px)}
+  .savebar{position:fixed;bottom:0;left:0;right:0;background:#ffffffee;border-top:3px solid var(--roxo2);padding:8px 14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  a.nav{background:var(--roxo);color:#fff;border-radius:12px;padding:9px 16px;font-family:'Baloo 2';text-decoration:none;box-shadow:0 3px 0 #4b2fa8}
 </style>
 </head>
 <body>
-<header>
-  <div class="robot">🤖🗺️</div>
-  <h1>🗺️ Resumo Turbo</h1>
-  <p>Tudo o que cai na prova, rapidinho!</p>
-</header>
-<nav>
-  <a href="index.html">🏠 Início</a>
-  <a href="leitura-guiada.html">📖 Leitura</a>
-  <a href="quiz.html">🎯 Quiz</a>
-  <a href="resumo.html" class="active">🗺️ Resumo</a>
-  <a href="simulado.html">📝 Simulado</a>
-</nav>
-<div class="wrap">
+<header><div class="wrap">
+  <div class="titlerow"><div class="m">🕵️</div><div>
+    <h1>Resumo Final — Detetives das Palavras</h1>
+    <div class="sub">Português · 3º ano · Prova 01/09 — revisão rápida antes da prova!</div>
+  </div></div>
+</div></header>
 
-  <h2 class="sec">📇 Palavras importantes</h2>
-  <div class="grid">
-    <div class="kcard r"><h3>📣 Anúncio</h3><p>Texto para <b>divulgar</b> algo (produto, serviço, evento ou ideia) e <b>convencer</b>.</p></div>
-    <div class="kcard r"><h3>🎯 Público-alvo</h3><p>O <b>grupo de pessoas</b> para quem o anúncio foi feito.</p><span class="ex">anúncio de brinquedo → crianças</span></div>
-    <div class="kcard r"><h3>🛍️ Publicitário × 📢 Conscientização</h3><p>Publicitário <b>vende/troca/aluga</b>; campanha <b>ensina ou alerta</b>.</p></div>
-    <div class="kcard"><h3>⬆️ Aumentativo (A)</h3><p>Palavra <b>grande</b>: termina em <b>-ão</b>.</p><span class="ex">gato → gatão</span></div>
-    <div class="kcard"><h3>⬇️ Diminutivo (D)</h3><p>Palavra <b>pequena</b>: termina em <b>-inho/-inha</b>. Pode mostrar carinho.</p><span class="ex">gato → gatinho</span></div>
-    <div class="kcard p"><h3>♂️ Masculino (M)</h3><p>Vem com <b>o, os, um, uns</b>.</p><span class="ex">o pato, um menino</span></div>
-    <div class="kcard p"><h3>♀️ Feminino (F)</h3><p>Vem com <b>a, as, uma, umas</b>.</p><span class="ex">a pata, uma menina</span></div>
-    <div class="kcard o"><h3>1️⃣ Singular / 🔢 Plural</h3><p><b>Um só</b> × <b>mais de um</b>. Geralmente +<b>s</b>.</p><span class="ex">o brinquedo → os brinquedos</span></div>
-    <div class="kcard b"><h3>✏️ -sinho / -zinho</h3><p><b>Com S</b> na palavra → S (casinha). <b>Sem S</b> → Z (papelzinho).</p></div>
-    <div class="kcard y"><h3>🔤 Ç</h3><p>Som de S <b>antes de A, O, U</b>. Nunca começa a palavra.</p><span class="ex">maçã, dança, açúcar</span></div>
-    <div class="kcard y"><h3>🔤 SS × S</h3><p><b>SS</b> entre 2 vogais (som de S); <b>S</b> entre vogais (som de Z).</p><span class="ex">professora, passeio · desenho, casa</span></div>
-    <div class="kcard pk"><h3>❓ Pontuação</h3><p><b>.</b> terminou · <b>?</b> pergunta · <b>!</b> emoção · <b>,</b> pausa/lista.</p></div>
-    <div class="kcard g"><h3>🏃 Verbo</h3><p>Indica <b>ação, estado, fenômeno ou desejo</b>, ligado a um tempo.</p><span class="ex">correr, ser, chover</span></div>
-    <div class="kcard g"><h3>⏰ Tempos do verbo</h3><p><b>Passado</b> (já foi), <b>presente</b> (agora), <b>futuro</b> (vai ser).</p><span class="ex">jogou · joga · jogará</span></div>
+<div class="wrap">
+  <h2 class="sec">⏰ A Linha do Tempo dos Verbos</h2>
+  <p>O verbo muda de forma para mostrar QUANDO a ação acontece:</p>
+  <div class="flow">
+    <div class="fstep"><div class="em">📅</div><b>PASSADO</b><small>já aconteceu<br>Ontem ela jogou</small></div>
+    <div class="fstep"><div class="em">☀️</div><b>PRESENTE</b><small>acontece agora<br>Hoje ela joga</small></div>
+    <div class="fstep"><div class="em">🚀</div><b>FUTURO</b><small>ainda vai acontecer<br>Amanhã ela jogará</small></div>
   </div>
 
-  <h2 class="sec">📌 Cola da prova</h2>
-  <div class="postit">Plural das regrinhas: -AL → -AIS (animal → animais) · -M → -NS (homem → homens) · -R/-Z → -ES (flor → flores, luz → luzes).</div>
-  <div class="postit">Ç aparece antes de A, O, U (maçã, dança, açúcar). Entre duas vogais, use SS (professora, passeio).</div>
-  <div class="postit">Diminutivo com S se a palavra já tem S (casinha); com Z se não tem (papelzinho, pezinho).</div>
-  <div class="postit">Pergunta → ? · Emoção/surpresa → ! · Frase que terminou → . · Pausa e listas → vírgula.</div>
-  <div class="postit">O verbo muda pelo TEMPO (passado/presente/futuro) e pela PESSOA: eu sonho, nós sonhamos.</div>
-  <div class="postit">O anúncio pensa no público-alvo e pode estar na TV, internet, ruas e revistas — não só em jornais.</div>
+  <h2 class="sec">📚 Grade de Palavras Importantes</h2>
+  <div class="grid">
+    <div class="word"><b>Anúncio</b><span>texto para divulgar algo e convencer.</span></div>
+    <div class="word"><b>Público-alvo</b><span>o grupo de pessoas para quem o anúncio é feito.</span></div>
+    <div class="word"><b>Publicitário × Campanha</b><span>um vende/troca/aluga; a campanha ensina ou alerta.</span></div>
+    <div class="word"><b>Aumentativo (-ão)</b><span>palavra grande: gato → gatão.</span></div>
+    <div class="word"><b>Diminutivo (-inho/-inha)</b><span>palavra pequena: gato → gatinho.</span></div>
+    <div class="word"><b>Masculino / Feminino</b><span>o, um / a, uma. professor → professora.</span></div>
+    <div class="word"><b>Singular / Plural</b><span>um só / mais de um. -AL→-AIS, -M→-NS, -R/-Z→-ES.</span></div>
+    <div class="word"><b>-sinho / -zinho</b><span>com S na palavra → S (casinha); sem S → Z (papelzinho).</span></div>
+    <div class="word"><b>Ç · SS · S</b><span>Ç antes de A/O/U; SS entre vogais; S entre vogais = som de Z.</span></div>
+    <div class="word"><b>Pontuação</b><span>. terminou · ? pergunta · ! emoção · , pausa/lista.</span></div>
+    <div class="word"><b>Verbo</b><span>ação, estado, fenômeno ou desejo, ligado a um tempo.</span></div>
+    <div class="word"><b>Tempos do verbo</b><span>passado, presente e futuro.</span></div>
+  </div>
 
-  <h2 class="sec">⚡ Mini-quiz relâmpago (clique para ver a resposta)</h2>
+  <h2 class="sec">💛 Dicas para Decorar</h2>
+  <div class="postits">
+    <div class="postit">📣 <b>Anúncio</b> pensa no público-alvo e pode estar na TV, internet, ruas e revistas — não só em jornais.</div>
+    <div class="postit">⚙️ Diminutivo e aumentativo nem sempre são tamanho: podem mostrar <b>carinho</b> ou algo <b>especial</b>.</div>
+    <div class="postit">🔢 Plural: -AL → -AIS (animal→animais) · -M → -NS (homem→homens) · -R/-Z → -ES (flor→flores).</div>
+    <div class="postit">✏️ Diminutivo com <b>S</b> se a palavra já tem S (casinha); com <b>Z</b> se não tem (papelzinho, pezinho).</div>
+    <div class="postit">🔤 <b>Ç</b> antes de A, O, U (maçã, dança). <b>SS</b> entre duas vogais (professora, passeio).</div>
+    <div class="postit">❓ Pergunta → <b>?</b> · Emoção/surpresa → <b>!</b> · Fim da frase → <b>.</b> · Pausa/lista → <b>,</b></div>
+    <div class="postit">🏃 O verbo muda pelo <b>tempo</b> (passado/presente/futuro) e pela <b>pessoa</b> (eu, tu, ele, nós...).</div>
+  </div>
+
+  <h2 class="sec">⚡ Mini-Quiz Relâmpago</h2>
+  <p>Clique em cada pergunta para ver a resposta:</p>
   <div id="flash"></div>
 
-  <div class="cta">
-    <p>Pronto para valer? 🚀</p>
-    <button onclick="location.href='simulado.html'">📝 Ir para o Simulado</button>
-  </div>
+  <button class="playbtn" onclick="location.href='jogo-vf.html'">🎮 Quero jogar Verdadeiro ou Falso! ▶</button>
 </div>
 
 <div class="savebar">
-  <span>💾 Este resumo é só leitura — nada para salvar aqui 🙂</span>
-  <button onclick="scrollTo({top:0,behavior:'smooth'})">⬆️ Topo</button>
+  <a class="nav" href="leitura-guiada.html">📖 Leitura Guiada</a>
+  <a class="nav" href="simulado.html">📝 Simulado</a>
+  <a class="nav" href="index.html">⌂ Início</a>
 </div>
-<div class="toast" id="toast"></div>
 
 <script>
-"use strict";
-var FLASH=[
- ["Para que serve o anúncio?","Para divulgar algo e convencer as pessoas."],
- ["O que é público-alvo?","O grupo de pessoas para quem o anúncio foi feito."],
- ["O diminutivo de casa?","casinha (com S, porque casa já tem S)."],
- ["O aumentativo de casa?","casarão."],
- ["Feminino de professor?","professora."],
- ["Plural de animal?","animais."],
- ["Como se escreve “maçã”?","Com Ç (antes de A/O/U)."],
- ["“Professora”: com S ou SS?","Com SS (entre duas vogais)."],
- ["Qual pontuação usar em “Que horas são”?","Ponto de interrogação ( ? )."],
- ["“Ela viajará” está em que tempo?","Futuro (ainda vai acontecer)."],
- ["Campanha de conscientização vende algo?","Não! Ela ensina ou alerta."]
+const F=[
+ ['Para que serve um anúncio?','Para divulgar algo e convencer as pessoas.'],
+ ['O que é público-alvo?','O grupo de pessoas para quem o anúncio foi feito.'],
+ ['O diminutivo e o aumentativo de “gato”?','gatinho (diminutivo) e gatão (aumentativo).'],
+ ['O feminino de “professor”?','professora.'],
+ ['O plural de “animal” e de “flor”?','animais e flores.'],
+ ['Como se escreve o diminutivo de “casa”?','casinha (com S, porque casa já tem S).'],
+ ['“maçã” é com Ç, S ou SS?','Com Ç (antes de A, O, U).'],
+ ['“professora” tem quantos S?','Dois (SS entre duas vogais).'],
+ ['Qual pontuação usar em “Que horas são”?','Ponto de interrogação ( ? ).'],
+ ['“Ela viajará” está em que tempo?','Futuro (ainda vai acontecer).'],
+ ['O que é um verbo?','Palavra de ação, estado, fenômeno ou desejo, ligada a um tempo.']
 ];
-(function(){var h=document.getElementById('flash');
- FLASH.forEach(function(f){var d=document.createElement('div');d.className="flash";
-  d.innerHTML='<div class="q">❓ '+f[0]+'</div><div class="a">💡 '+f[1]+'</div>';
-  d.onclick=function(){d.classList.toggle('open');};h.appendChild(d);});})();
-function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2000);}
+const fbox=document.getElementById('flash');
+F.forEach(f=>{const d=document.createElement('div');d.className='flash';
+  d.innerHTML=`<div class="q">❓ ${f[0]} <span class="tap">toque 👆</span></div><div class="a">✅ ${f[1]}</div>`;
+  d.onclick=()=>d.classList.toggle('open');fbox.appendChild(d);});
 </script>
 </body>
 </html>
