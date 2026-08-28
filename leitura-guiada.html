@@ -3,371 +3,289 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leitura Guiada · Fábrica Mágica das Palavras</title>
+<title>Leitura Guiada · Detetives das Palavras · Português 3º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --teal:#0e9e8e; --teal-d:#0a7d70; --red:#e63946; --red-d:#c22c39;
-    --yellow:#ffd23f; --purple:#7b5ea7; --ink:#2b2440; --paper:#fff8ef;
-    --card:#ffffff; --ok:#1f9d55; --soft:#fdeecf;
-  }
+  :root{--roxo:#6c4bd8;--roxo2:#8a6bf0;--lil:#efeafc;--amarelo:#ffd23f;--laranja:#ff8c42;--azul:#3fa9e8;--rosa:#ff7eb6;--verde:#1f9d55;--card:#fff;--ink:#2b2440;--dim:#7a6f92;--red:#ef5a6f}
   *{box-sizing:border-box}
-  body{margin:0;font-family:'Comic Sans MS','Trebuchet MS',Verdana,sans-serif;
-    background:var(--paper);color:var(--ink);line-height:1.55}
-  header{background:linear-gradient(120deg,var(--teal),var(--red));color:#fff;
-    padding:18px 16px 22px;text-align:center;position:relative;overflow:hidden}
-  header h1{margin:.2em 0;font-size:1.7rem;text-shadow:1px 2px 0 rgba(0,0,0,.15)}
-  header p{margin:.2em 0;font-size:1rem;opacity:.95}
-  .robot{font-size:2.6rem}
-  .gears{position:absolute;font-size:2rem;opacity:.25}
-  nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;background:var(--ink);
-    padding:8px}
-  nav a{color:#fff;text-decoration:none;background:rgba(255,255,255,.12);
-    padding:6px 12px;border-radius:20px;font-size:.85rem;font-weight:bold}
-  nav a.active{background:var(--yellow);color:var(--ink)}
-  .wrap{max-width:820px;margin:0 auto;padding:14px}
-  .bar{background:#e7ddcf;border-radius:14px;height:20px;overflow:hidden;margin:10px 0}
-  .bar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--yellow));
-    transition:width .5s}
-  .score{text-align:center;font-size:1.1rem;font-weight:bold;margin:6px 0}
-  .block{background:var(--card);border-radius:16px;margin:14px 0;box-shadow:0 3px 10px rgba(0,0,0,.08);
-    overflow:hidden;border:3px solid #eee}
-  .block.locked{opacity:.55}
-  .block h2{margin:0;padding:14px 16px;cursor:pointer;font-size:1.15rem;color:#fff;
-    display:flex;justify-content:space-between;align-items:center}
-  .b1 h2{background:var(--red)} .b2 h2{background:var(--teal)}
-  .b3 h2{background:var(--purple)} .b4 h2{background:#e07a1f}
-  .b5 h2{background:#2f8fd4} .b6 h2{background:#1f9d55}
-  .b7 h2{background:#d4457e} .b8 h2{background:#8a6d1a} .b9 h2{background:#0a7d70}
-  .body{padding:0 16px 16px;display:none}
-  .block.open .body{display:block}
-  .read{background:var(--soft);border-radius:12px;padding:12px 14px;margin:10px 0;font-size:1.02rem}
-  .keys{background:#eef7f5;border-left:6px solid var(--teal);border-radius:8px;padding:10px 12px;margin:10px 0}
-  .keys b{color:var(--teal-d)}
-  .q{margin:12px 0;background:#fafafa;border-radius:10px;padding:10px 12px}
-  .q label{font-weight:bold;display:block;margin-bottom:6px}
-  textarea{width:100%;min-height:52px;border:2px solid #d9d2c4;border-radius:8px;padding:8px;
-    font-family:inherit;font-size:1rem;resize:vertical}
-  .model{display:none;margin-top:8px;background:#eafaf0;border:2px dashed var(--ok);
-    border-radius:8px;padding:8px 10px}
-  .model.show{display:block}
-  .model b{color:var(--ok)}
-  .selfeval{display:none;margin-top:6px;font-size:.95rem}
-  .selfeval.show{display:block}
-  .selfeval label{display:inline-block;margin-right:12px;font-weight:normal;cursor:pointer}
-  button{font-family:inherit;cursor:pointer;border:none;border-radius:22px;padding:10px 18px;
-    font-weight:bold;font-size:1rem}
-  .btn{background:var(--teal);color:#fff}
-  .btn:disabled{background:#c9c2b5;cursor:not-allowed}
-  .btn-y{background:var(--yellow);color:var(--ink)}
-  .done-tag{display:none;background:var(--yellow);color:var(--ink);border-radius:20px;
-    padding:2px 10px;font-size:.8rem}
-  .block.done .done-tag{display:inline-block}
-  .final{background:linear-gradient(120deg,#fff3d6,#ffe8e8);border-radius:16px;padding:16px;margin:16px 0;
-    border:3px dashed var(--red)}
-  .final h2{color:var(--red-d);text-align:center;margin-top:0}
-  .peg{background:#fff;border-radius:10px;padding:8px 12px;margin:6px 0;border-left:5px solid var(--yellow)}
-  table{width:100%;border-collapse:collapse;margin:10px 0;background:#fff;border-radius:10px;overflow:hidden}
-  th,td{border:1px solid #e5ddcf;padding:8px;text-align:left;font-size:.95rem}
-  th{background:var(--teal);color:#fff}
-  .savebar{position:sticky;bottom:0;background:var(--ink);color:#fff;display:flex;flex-wrap:wrap;
-    gap:8px;justify-content:center;align-items:center;padding:8px;font-size:.82rem}
-  .savebar button{padding:6px 12px;font-size:.82rem}
-  .savebar .stamp{opacity:.85}
-  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;
-    align-items:center;justify-content:center}
-  .modal-bg.show{display:flex}
-  .modal{background:#fff;border-radius:16px;padding:20px;max-width:340px;text-align:center;color:var(--ink)}
-  .modal button{margin:8px 6px 0}
-  .foot{text-align:center;padding:20px;color:var(--purple);font-weight:bold}
-  .toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--ok);color:#fff;
-    padding:10px 18px;border-radius:20px;opacity:0;transition:opacity .3s;z-index:60;font-weight:bold}
-  .toast.show{opacity:1}
+  body{margin:0;background:radial-gradient(circle at 90% 0,#efe6ff,transparent),linear-gradient(180deg,#efeafc,#f6f2ff);
+    font-family:'Nunito',system-ui,sans-serif;color:var(--ink);line-height:1.55;padding-bottom:70px}
+  h1,h2,h3,.baloo{font-family:'Baloo 2','Nunito',sans-serif}
+  header{background:linear-gradient(120deg,#6c4bd8,#8a6bf0);color:#fff;padding:18px 16px 22px;border-bottom:6px solid var(--amarelo);box-shadow:0 6px 0 #4b2fa8}
+  .wrap{max-width:820px;margin:0 auto;padding:0 16px}
+  .titlerow{display:flex;align-items:center;gap:14px}
+  .m{font-size:2.6rem;filter:drop-shadow(0 3px 0 rgba(0,0,0,.15))}
+  h1{margin:0;font-size:1.7rem;text-shadow:0 2px 0 rgba(0,0,0,.15)}
+  .sub{font-size:.95rem;opacity:.95;margin-top:2px}
+  .hud{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+  .bar{flex:1;min-width:160px;height:16px;background:#efe6ff;border:3px solid #4b2fa8;border-radius:20px;overflow:hidden}
+  .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--amarelo),var(--laranja));transition:.4s}
+  .stars{background:#fff;color:var(--laranja);border-radius:20px;padding:4px 12px;font-weight:800;border:3px solid var(--amarelo);white-space:nowrap}
+  .intro{background:#fff;border:3px dashed var(--roxo2);border-radius:18px;padding:14px 18px;margin:18px 0;font-size:1.02rem}
+  .intro b{color:var(--roxo)}
+  .block{background:var(--card);border-radius:20px;margin:16px 0;box-shadow:0 5px 0 rgba(0,0,0,.08);overflow:hidden;border:3px solid #e7defc}
+  .bhead{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;color:#fff;font-family:'Baloo 2';font-size:1.2rem}
+  .bhead .n{background:#fff;color:#333;border-radius:50%;width:34px;height:34px;display:grid;place-items:center;font-weight:800;flex:none}
+  .bhead .chev{margin-left:auto;transition:.3s;font-size:1.2rem}
+  .block.open .chev{transform:rotate(180deg)}
+  .bbody{display:none;padding:16px 18px 20px}
+  .block.open .bbody{display:block;animation:pop .3s}
+  @keyframes pop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .bbody p{margin:.5em 0;font-size:1.05rem}
+  .words{background:var(--lil);border-left:6px solid var(--roxo2);border-radius:12px;padding:12px 14px;margin:12px 0}
+  .words h4{margin:0 0 6px;color:var(--roxo)}
+  .words li{margin:5px 0}
+  .words b{color:var(--laranja)}
+  .qbox{background:#fffdf2;border:3px solid var(--amarelo);border-radius:16px;padding:12px 14px;margin:12px 0}
+  .qbox .qq{font-weight:800;margin-bottom:8px;font-size:1.05rem}
+  .opt{display:block;width:100%;text-align:left;background:#fff;border:3px solid #eadff9;border-radius:12px;padding:11px 14px;margin:8px 0;font-size:1.02rem;font-family:inherit;cursor:pointer;transition:.15s}
+  .opt:hover{border-color:var(--roxo2);transform:translateX(3px)}
+  .opt.right{border-color:var(--verde);background:#e7fbee;color:#1a6b3c;font-weight:800}
+  .opt.wrong{border-color:var(--red);background:#ffeef0;color:#a23}
+  .opt .mk{float:right;font-weight:800}
+  .fb{margin-top:8px;font-size:.98rem;padding:8px 12px;border-radius:10px;display:none}
+  .fb.show{display:block}
+  .fb.ok{background:#e7fbee;color:#1a6b3c;border:2px solid var(--verde)}
+  .fb.no{background:#fff3f4;color:#a23;border:2px solid var(--red)}
+  .bdone{display:none;margin-top:12px;background:var(--roxo);color:#fff;border-radius:14px;padding:10px 14px;font-weight:800;text-align:center;font-family:'Baloo 2'}
+  .bdone.show{display:block;animation:pop .3s}
+  .trophy{display:none;text-align:center;background:linear-gradient(120deg,#fff3c4,#ffe08a);border:4px solid var(--laranja);border-radius:22px;padding:24px;margin:20px 0}
+  .trophy.show{display:block;animation:pop .4s}
+  .trophy .big{font-size:3.4rem}
+  .trophy h2{color:var(--laranja);margin:6px 0}
+  .savebar{position:fixed;bottom:0;left:0;right:0;background:#ffffffee;border-top:3px solid var(--roxo2);padding:8px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;backdrop-filter:blur(4px)}
+  .savebar small{color:var(--dim);font-weight:700}
+  .savebar button,a.nav{background:var(--roxo);color:#fff;border:none;border-radius:12px;padding:9px 16px;font-family:'Baloo 2';font-size:1rem;text-decoration:none;cursor:pointer;box-shadow:0 3px 0 #4b2fa8}
+  .savebar button.ghost{background:#fff;color:var(--roxo);border:2px solid var(--roxo2);box-shadow:0 3px 0 #dfd2f5}
 </style>
 </head>
 <body>
-<header>
-  <span class="gears" style="top:8px;left:12px">⚙️</span>
-  <span class="gears" style="bottom:6px;right:16px">⚙️</span>
-  <div class="robot">🤖</div>
-  <h1>📖 Leitura Guiada</h1>
-  <p>Fábrica Mágica das Palavras · Português 3º ano</p>
-  <p style="font-size:.85rem">Unidades 7 e 8 · Prova: 01/09 (terça)</p>
-</header>
-<nav>
-  <a href="index.html">🏠 Início</a>
-  <a href="leitura-guiada.html" class="active">📖 Leitura</a>
-  <a href="quiz.html">🎯 Quiz</a>
-  <a href="resumo.html">🗺️ Resumo</a>
-  <a href="simulado.html">📝 Simulado</a>
-</nav>
+<header><div class="wrap">
+  <div class="titlerow">
+    <div class="m">🕵️</div>
+    <div>
+      <h1>Leitura Guiada — Detetives das Palavras</h1>
+      <div class="sub">Português · 3º ano · Prova 01/09 — Anúncio, Substantivos, Ortografia, Pontuação e Verbos</div>
+    </div>
+  </div>
+  <div class="hud">
+    <div class="bar"><i id="pbar"></i></div>
+    <div class="stars">⭐ <span id="starct">0</span></div>
+  </div>
+</div></header>
 
 <div class="wrap">
-  <p style="text-align:center">Olá, jovem inventor(a)! 👋 O robô <b>Turbo</b> vai te guiar pela fábrica.
-  Leia cada bloco, responda as 3 perguntas <b>escrevendo</b> na caixinha e clique em <b>Conferir</b>.
-  O próximo bloco só abre depois! 🚀</p>
-  <div class="bar"><span id="bar"></span></div>
-  <div class="score" id="score">⭐ 0 estrelas</div>
-
+  <div class="intro">🕵️ <b>Oi, jovem detetive!</b> Eu sou o <b>Detetive Turbo</b>. Vamos desvendar os mistérios das palavras! Clique em cada bloco para abrir, leia com atenção e responda as 3 pistas (perguntinhas). Cada acerto vale uma <b>estrela ⭐</b>. Bora investigar! 🔎</div>
   <div id="blocks"></div>
 
-  <div class="final" id="finalbox" style="display:none">
-    <h2>🕵️ Caça às Pegadinhas!</h2>
-    <p>Fique esperto com estas 10 armadilhas que costumam cair na prova:</p>
-    <div id="pegs"></div>
-    <h2 style="margin-top:18px">🗺️ Mapa da Cobertura (Tópico → Bloco)</h2>
-    <table>
-      <tr><th>Tópico da prova</th><th>Onde estudei</th></tr>
-      <tr><td>Anúncio + público-alvo (interpretação)</td><td>Bloco 1</td></tr>
-      <tr><td>Aumentativo e diminutivo (grau)</td><td>Bloco 2</td></tr>
-      <tr><td>Masculino e feminino (gênero)</td><td>Bloco 3</td></tr>
-      <tr><td>Singular e plural (número)</td><td>Bloco 4</td></tr>
-      <tr><td>Ortografia -inho / -zinho / -sinho</td><td>Bloco 5</td></tr>
-      <tr><td>Ortografia Ç, S ou SS</td><td>Bloco 6</td></tr>
-      <tr><td>Pontuação ( . ? ! , )</td><td>Bloco 7</td></tr>
-      <tr><td>Verbos (ação, tempo e pessoa)</td><td>Bloco 8</td></tr>
-      <tr><td>Revisão geral</td><td>Bloco 9</td></tr>
-    </table>
-    <p style="text-align:center;font-size:1.1rem">🏆 Parabéns! Você terminou a Leitura Guiada!<br>
-    Agora vá para o <a href="quiz.html">🎯 Quiz</a>.</p>
+  <div class="trophy" id="trophy">
+    <div class="big">🏆🕵️🔍</div>
+    <h2>Parabéns, Detetive das Palavras!</h2>
+    <p>Você terminou todos os blocos! Agora corre para o <a class="nav" href="jogo-vf.html" style="display:inline-block;margin-top:6px">🎮 Jogo Verdadeiro ou Falso</a> e depois treine no Simulado. Você é demais! ⭐</p>
   </div>
 </div>
 
 <div class="savebar">
-  <span>💾 Salvamento automático</span>
-  <span class="stamp" id="stamp">—</span>
-  <button class="btn-y" onclick="exportar()">📥 Exportar</button>
-  <button class="btn-y" onclick="document.getElementById('imp').click()">📤 Importar</button>
-  <input type="file" id="imp" style="display:none" accept="application/json" onchange="importar(event)">
-  <button class="btn" onclick="pedirZerar()">🗑️ Zerar</button>
+  <small id="stamp">Seu progresso é salvo sozinho 💾</small>
+  <button class="ghost" onclick="resetAll()">🔄 Recomeçar</button>
+  <a class="nav" href="index.html">⌂ Início</a>
 </div>
-
-<div class="modal-bg" id="modalbg">
-  <div class="modal">
-    <p id="modaltext">Tem certeza?</p>
-    <button class="btn" id="modalyes">Sim</button>
-    <button class="btn-y" onclick="fecharModal()">Não</button>
-  </div>
-</div>
-<div class="toast" id="toast"></div>
 
 <script>
-"use strict";
-var KEY="fabrica_pt3_leitura_v2";
-var mem={};
+const KEY='lg_pt3_detetives';
+const CORES=['#6c4bd8','#ff8c42','#8a6bf0','#e07a1f','#3fa9e8','#1f9d55','#ff7eb6','#b58900','#6c4bd8'];
+const B=[
+ {t:"O Anúncio e o público-alvo",e:"📣",
+  html:`<p>Todo dia vemos <b>anúncios</b>: na TV, na internet, nas ruas, em revistas e jornais. O anúncio é um texto feito para <b>divulgar</b> algo (um produto, um serviço, um evento ou uma ideia) e <b>convencer</b> as pessoas.</p>
+  <p>Ele chama a atenção com <b>imagens</b>, <b>frases curtas</b> e <b>informações</b> — nunca só números! E é sempre feito pensando no <b>público-alvo</b>: o grupo de pessoas para quem o anúncio foi feito.</p>
+  <p>Existem dois tipos: o <b>anúncio publicitário</b> (quer vender, trocar ou alugar um produto/serviço) e a <b>campanha de conscientização</b> (quer ensinar ou alertar, como a do Ibama “Se não é livre, eu não curto”, que pede para deixar os animais livres).</p>`,
+  words:[["Anúncio","texto para divulgar algo e convencer as pessoas"],
+         ["Público-alvo","o grupo de pessoas para quem o anúncio foi feito"],
+         ["Publicitário × Conscientização","um vende/troca/aluga; a campanha ensina ou alerta"]],
+  qs:[{q:"Para que serve um anúncio?",o:["Contar uma longa história","Divulgar algo e convencer as pessoas","Dar uma receita de bolo","Ensinar uma dança"],c:1,
+       ex:"O anúncio divulga um produto, serviço, evento ou ideia e tenta convencer."},
+      {q:"O público-alvo de um anúncio é:",o:["A pessoa que desenhou o anúncio","O grupo de pessoas para quem o anúncio foi feito","O preço do produto","O jornal onde ele saiu"],c:1,
+       ex:"Público-alvo é quem o anúncio quer alcançar (ex.: brinquedo → crianças)."},
+      {q:"A campanha do Ibama “Se não é livre, eu não curto” é:",o:["Uma campanha de conscientização","Um anúncio que vende animais","Um bilhete","Um poema"],c:0,
+       ex:"Ela ensina e alerta a proteger os animais — não vende nada."}]},
 
-var DATA=[
-{cls:"b1",icon:"📣",title:"O Anúncio e o público-alvo",
- read:"O <b>anúncio</b> é um texto feito para <b>divulgar</b> alguma coisa — um produto, um serviço, um evento ou uma ideia — e <b>convencer</b> as pessoas. Ele pode aparecer na TV, na internet, nas ruas, em revistas e jornais (<b>não é só em jornal!</b>). Para chamar a atenção, usa <b>imagens</b>, <b>frases curtas e chamativas</b> e <b>informações</b> (não usa “apenas números”). Todo anúncio é feito pensando no <b>público-alvo</b>: o grupo de pessoas para quem o anúncio foi feito. Existem o <b>anúncio publicitário</b> (quer vender, trocar ou alugar um produto/serviço) e a <b>campanha de conscientização</b> (quer ensinar ou alertar, como a do Ibama “Se não é livre, eu não curto”).",
- keys:"<b>Anúncio</b> = divulgar e convencer. <b>Público-alvo</b> = para quem o anúncio é feito. Pode ter imagens, frases curtas e informações. Tipos: publicitário (vende/troca/aluga) e campanha de conscientização (ensina/alerta).",
- qs:[
-  {q:"Com as suas palavras, para que serve um anúncio?",m:"Serve para divulgar alguma coisa (produto, serviço, evento ou ideia) e convencer as pessoas."},
-  {q:"O que é o público-alvo de um anúncio?",m:"É o grupo de pessoas para quem o anúncio foi feito (por exemplo, um anúncio de brinquedo tem as crianças como público-alvo)."},
-  {q:"Verdadeiro ou falso: “Todo anúncio precisa ser publicado só em jornais.” Explique.",m:"Falso. O anúncio pode aparecer também na TV, na internet, nas ruas e em revistas — não só em jornais."}
- ]},
-{cls:"b2",icon:"⚙️",title:"Grau do substantivo: aumentativo e diminutivo",
- read:"O <b>substantivo</b> dá nome aos seres e às coisas (gato, casa, menino). Ele pode mudar de tamanho! O <b>DIMINUTIVO</b> indica algo <b>pequeno</b>, com as terminações <b>-inho/-inha</b>: gato→gatinho, casa→casinha, livro→livrinho. O <b>AUMENTATIVO</b> indica algo <b>grande</b>, com a terminação <b>-ão</b>: gato→gatão, carro→carrão, bola→bolão. Atenção: nem sempre é só tamanho! O diminutivo pode mostrar <b>carinho</b> (mãezinha, amiguinho) e o aumentativo, algo <b>especial</b> (presentão).",
- keys:"<b>Diminutivo</b> (D) = pequeno, -inho/-inha. <b>Aumentativo</b> (A) = grande, -ão. Também mostram carinho ou algo especial.",
- qs:[
-  {q:"Escreva o diminutivo e o aumentativo da palavra “gato”.",m:"Diminutivo: gatinho. Aumentativo: gatão."},
-  {q:"Diga se é diminutivo (D) ou aumentativo (A): casarão e livrinho.",m:"casarão = A (aumentativo); livrinho = D (diminutivo)."},
-  {q:"Na frase “Que amiguinho legal!”, amiguinho mostra tamanho pequeno ou carinho?",m:"Mostra CARINHO (afeto), e não tamanho."}
- ]},
-{cls:"b3",icon:"🚻",title:"Gênero do substantivo: masculino e feminino",
- read:"Os substantivos têm dois <b>GÊNEROS</b>: masculino e feminino. É <b>MASCULINO</b> (M) quando vem com <b>o, os, um, uns</b> (o pato, um menino). É <b>FEMININO</b> (F) quando vem com <b>a, as, uma, umas</b> (a pata, uma menina). Muitas vezes mudamos a palavra: professor→professora, aluno→aluna. As palavras terminadas em <b>-ão</b> viram feminino trocando por <b>-ã, -ona ou -oa</b>: campeão→campeã, leitão→leitoa. Existem palavras que servem para os dois: <b>o astronauta / a astronauta</b>, <b>o dentista / a dentista</b> — muda só o artiguinho!",
- keys:"<b>Masculino (M)</b> = o, os, um, uns. <b>Feminino (F)</b> = a, as, uma, umas. Alguns só mudam o artigo (o/a dentista).",
- qs:[
-  {q:"Diga se é M ou F: menino, professora, mesa.",m:"menino = M; professora = F; mesa = F."},
-  {q:"Escreva o feminino de “gato” e de “cachorro”.",m:"gata e cadela."},
-  {q:"A palavra “astronauta” muda quando é uma mulher? Explique.",m:"Não muda a palavra; muda só o artigo: o astronauta / a astronauta."}
- ]},
-{cls:"b4",icon:"🔢",title:"Número do substantivo: singular e plural",
- read:"O <b>NÚMERO</b> mostra a quantidade. <b>SINGULAR</b> indica <b>um só</b> (a casa, a flor). <b>PLURAL</b> indica <b>mais de um</b> (as casas, as flores). Para o plural, geralmente acrescentamos <b>-S</b>: casa→casas, gato→gatos, bola→bolas, livro→livros. Regrinhas espertas: -AL vira -AIS (animal→animais); -M vira -NS (homem→homens); -R ou -Z ganham -ES (flor→flores, luz→luzes).",
- keys:"<b>Singular</b> = um só. <b>Plural</b> = mais de um. -AL→-AIS · -M→-NS · -R/-Z→-ES.",
- qs:[
-  {q:"Passe para o plural: casa, bola, livro.",m:"casas, bolas, livros."},
-  {q:"Escreva o plural de “flor” e de “animal”.",m:"flores e animais."},
-  {q:"Passe para o singular: meninos e casas.",m:"menino e casa."}
- ]},
-{cls:"b5",icon:"✏️",title:"Ortografia: -inho, -zinho ou -sinho?",
- read:"Ao <b>escrever</b> o diminutivo, olhe a <b>última sílaba</b>. Se a palavra <b>JÁ TEM a letra S</b>, o diminutivo é com S: casa→<b>casinha</b>, princesa→princesinha, coisa→coisinha, rosa→rosinha. Se a última sílaba <b>NÃO tem S</b>, o diminutivo leva <b>Z</b>: irmã→irmãzinha, papel→papelzinho, chapéu→chapeuzinho, pé→pezinho. Também existe o -inho simples: moço→mocinho.",
- keys:"Palavra <b>com S</b> → -sinho/-sinha (casinha, coisinha). Palavra <b>sem S</b> → -zinho/-zinha (papelzinho, pezinho).",
- qs:[
-  {q:"Escreva o diminutivo de “casa” e de “papel”.",m:"casinha (com S, porque casa já tem S) e papelzinho (com Z)."},
-  {q:"Por que “coisa” fica “coisinha” e não “coizinha”?",m:"Porque a palavra coisa já tem a letra S, então o diminutivo mantém o S."},
-  {q:"“Chapéu” no diminutivo é com S ou com Z? Escreva.",m:"Com Z: chapeuzinho, porque não há S na última sílaba de chapéu."}
- ]},
-{cls:"b6",icon:"🔤",title:"Ortografia: Ç, S ou SS?",
- read:"Aqui está a regrinha da professora! O <b>Ç (cedilha)</b> tem som de S e aparece <b>antes de A, O, U</b>: can<b>ç</b>ão, ma<b>ç</b>ã, a<b>ç</b>úcar, cabe<b>ç</b>a, dan<b>ç</b>a. O <b>Ç nunca começa uma palavra</b>. O <b>SS</b> aparece <b>entre duas vogais</b> com som forte de S: profe<b>ss</b>ora, pa<b>ss</b>eio, pa<b>ss</b>arinho, mi<b>ss</b>a. Já o <b>S</b> sozinho entre vogais costuma ter som de Z: de<b>s</b>enho, ca<b>s</b>a, me<b>s</b>a.",
- keys:"<b>Ç</b> = som de S antes de A, O, U (maçã, dança, açúcar). <b>SS</b> = entre 2 vogais (professora, passeio). <b>S</b> entre vogais = som de Z (desenho, casa).",
- qs:[
-  {q:"Complete com Ç: can__ão e ma__ã.",m:"canção e maçã (Ç antes de A/O)."},
-  {q:"Complete com SS: profe__ora e pa__eio.",m:"professora e passeio (SS entre duas vogais)."},
-  {q:"“Desenho” se escreve com S, SS ou Ç?",m:"Com S: desenho (o S entre vogais tem som de Z)."}
- ]},
-{cls:"b7",icon:"❓",title:"Pontuação: pequenos sinais, grandes sentidos",
- read:"Os <b>sinais de pontuação</b> ajudam a entender e a dar sentido ao que lemos. O <b>ponto final ( . )</b> mostra que a frase terminou (<i>Hoje fez sol.</i>). O <b>ponto de interrogação ( ? )</b> é usado numa <b>pergunta</b> (<i>Que horas são?</i>). O <b>ponto de exclamação ( ! )</b> mostra <b>espanto, alegria, surpresa ou emoção</b> (<i>Que legal!</i>). A <b>vírgula ( , )</b> faz uma <b>pequena pausa</b> e separa itens de uma lista (<i>Eu gosto de sorvete, chocolate e morango.</i>).",
- keys:"<b>.</b> frase terminou · <b>?</b> pergunta · <b>!</b> emoção/surpresa · <b>,</b> pausa e listas.",
- qs:[
-  {q:"Qual sinal usamos no fim de “Que horas são”? Por quê?",m:"O ponto de interrogação ( ? ), porque é uma pergunta."},
-  {q:"Qual sinal combina com “Que surpresa”? Por quê?",m:"O ponto de exclamação ( ! ), porque mostra surpresa/emoção."},
-  {q:"Para que serve a vírgula? Dê um exemplo.",m:"Serve para fazer uma pequena pausa e separar itens de uma lista. Ex.: Comprei pão, leite e ovos."}
- ]},
-{cls:"b8",icon:"🏃",title:"Verbos: ação, tempo e pessoa (Unidade 8)",
- read:"O <b>VERBO</b> indica uma <b>AÇÃO</b> (correr, brincar), um <b>ESTADO</b> (ser, estar), um <b>FENÔMENO DA NATUREZA</b> (chover, trovejar) ou um <b>DESEJO</b> (sonhar, querer) — sempre ligado a um <b>TEMPO</b>. O verbo muda de forma (<b>flexiona</b>) para mostrar quando acontece: <b>PASSADO</b> (já aconteceu: <i>Ontem ela jogou</i>), <b>PRESENTE</b> (agora: <i>Hoje ela joga</i>) e <b>FUTURO</b> (ainda vai acontecer: <i>Amanhã ela jogará</i>). Também muda pela <b>PESSOA</b>: eu sonho, tu sonhas, ele sonha, nós sonhamos, vós sonhais, eles sonham.",
- keys:"<b>Verbo</b> = ação, estado, fenômeno ou desejo. <b>Tempos</b>: passado, presente, futuro. <b>Flexiona</b> pelo tempo e pela pessoa.",
- qs:[
-  {q:"Escreva o verbo “brincar” no passado, no presente e no futuro (com “ela”).",m:"ela brincou (passado), ela brinca (presente), ela brincará (futuro)."},
-  {q:"Diga o tempo do verbo: “Ontem eu joguei bola.”",m:"Passado (a ação já aconteceu; a palavra “ontem” ajuda a perceber)."},
-  {q:"Complete: “Amanhã eles ______ ao museu.” (visitar)",m:"visitarão (Amanhã eles visitarão ao museu — futuro)."}
- ]},
-{cls:"b9",icon:"🎯",title:"Revisão geral (mistura tudo!)",
- read:"Hora de juntar tudo, jovem inventor(a)! Na prova vai cair: <b>anúncio</b> e <b>público-alvo</b>, <b>grau</b> (aumentativo/diminutivo), <b>gênero</b> (M/F), <b>número</b> (singular/plural), <b>ortografia</b> (-inho/-zinho/-sinho e Ç/S/SS) e <b>pontuação</b>, além dos <b>verbos</b> (tempo e pessoa). Respire fundo e mostre o que aprendeu! 💪",
- keys:"Revisão dos temas da prova. Releia os blocos que ainda te deixam em dúvida.",
- qs:[
-  {q:"Classifique o grau de “bolão” e escreva o feminino de “menino”.",m:"“bolão” está no aumentativo; o feminino de menino é menina."},
-  {q:"Escreva “professora” com o número certo de letras S e diga o plural de “flor”.",m:"professora (com SS entre as vogais); plural de flor = flores."},
-  {q:"Que pontuação usamos numa pergunta e em que tempo está “ela viajará”?",m:"Numa pergunta usamos o ponto de interrogação ( ? ); “ela viajará” está no futuro."}
- ]}
+ {t:"Grau: aumentativo e diminutivo",e:"⚙️",
+  html:`<p>O <b>substantivo</b> dá nome aos seres e às coisas (gato, casa, menino). Ele pode mudar de tamanho!</p>
+  <p>O <b>DIMINUTIVO</b> deixa a palavra <b>pequena</b>, com <b>-inho/-inha</b>: gato→gatinho, casa→casinha.</p>
+  <p>O <b>AUMENTATIVO</b> deixa a palavra <b>grande</b>, com <b>-ão</b>: gato→gatão, casa→casarão, bola→bolão.</p>
+  <p>Cuidado, detetive: nem sempre é só tamanho! Às vezes o diminutivo mostra <b>carinho</b> (mãezinha, amiguinho) e o aumentativo, algo <b>especial</b> (presentão).</p>`,
+  words:[["Diminutivo (D)","pequeno, com -inho/-inha"],
+         ["Aumentativo (A)","grande, com -ão"],
+         ["Atenção","também mostram carinho ou algo especial"]],
+  qs:[{q:"O DIMINUTIVO de “casa” é:",o:["casarão","casinha","casas","casa"],c:1,
+       ex:"Diminutivo usa -inho/-inha: casinha."},
+      {q:"A palavra “livrão” está no grau:",o:["aumentativo","diminutivo","plural","feminino"],c:0,
+       ex:"A terminação -ão indica aumentativo (grande)."},
+      {q:"Em “Que amiguinho legal!”, amiguinho mostra:",o:["um tamanho gigante","carinho","mais de um amigo","uma ação"],c:1,
+       ex:"Aqui o diminutivo mostra carinho, não tamanho."}]},
+
+ {t:"Gênero: masculino e feminino",e:"🚻",
+  html:`<p>Os substantivos têm dois <b>gêneros</b>. É <b>MASCULINO (M)</b> quando vem com <b>o, os, um, uns</b> (o pato, um menino). É <b>FEMININO (F)</b> quando vem com <b>a, as, uma, umas</b> (a pata, uma menina).</p>
+  <p>Muitas vezes mudamos a palavra: professor→professora, aluno→aluna. As terminadas em <b>-ão</b> viram feminino com <b>-ã, -ona ou -oa</b>: campeão→campeã, leitão→leitoa.</p>
+  <p>E há palavras espertas que servem para os dois: <b>o astronauta / a astronauta</b>, <b>o dentista / a dentista</b> — muda só o artiguinho!</p>`,
+  words:[["Masculino (M)","o, os, um, uns"],
+         ["Feminino (F)","a, as, uma, umas"],
+         ["Comum de 2 gêneros","muda só o artigo (o/a dentista)"]],
+  qs:[{q:"Qual palavra é do gênero FEMININO?",o:["o menino","a professora","o gato","um carro"],c:1,
+       ex:"Vem com “a”: é feminino."},
+      {q:"O FEMININO de “campeão” é:",o:["campeão","campeões","campeã","campeãozinho"],c:2,
+       ex:"Palavras em -ão fazem o feminino em -ã, -ona ou -oa."},
+      {q:"A palavra “astronauta” no feminino:",o:["não muda; muda só o artigo (o/a astronauta)","vira “astronаuta feminina”","só pode ser homem","vira “astronauto”"],c:0,
+       ex:"É comum de dois gêneros: muda só o artigo."}]},
+
+ {t:"Número: singular e plural",e:"🔢",
+  html:`<p>O <b>número</b> mostra a quantidade. <b>SINGULAR</b> é <b>um só</b> (a casa, a flor). <b>PLURAL</b> é <b>mais de um</b> (as casas, as flores).</p>
+  <p>Para formar o plural, geralmente acrescentamos <b>-S</b>: casa→casas, gato→gatos.</p>
+  <p>Mas fique esperto com as regrinhas: <b>-AL</b> vira <b>-AIS</b> (animal→animais); <b>-M</b> vira <b>-NS</b> (homem→homens); <b>-R ou -Z</b> ganham <b>-ES</b> (flor→flores, luz→luzes).</p>`,
+  words:[["Singular","um só ser ou coisa"],
+         ["Plural","mais de um"],
+         ["Regrinhas","-AL→-AIS · -M→-NS · -R/-Z→-ES"]],
+  qs:[{q:"O PLURAL de “animal” é:",o:["animals","animais","animales","animalzinho"],c:1,
+       ex:"Palavras em -al trocam para -ais."},
+      {q:"O PLURAL de “flor” é:",o:["flores","florzinha","flors","flor"],c:0,
+       ex:"Palavras terminadas em -r ganham -es."},
+      {q:"“As casas” está no:",o:["singular","plural","aumentativo","diminutivo"],c:1,
+       ex:"Fala de mais de uma casa: plural."}]},
+
+ {t:"Ortografia: -inho, -zinho ou -sinho?",e:"✏️",
+  html:`<p>Ao <b>escrever</b> o diminutivo, olhe a <b>última sílaba</b> da palavra.</p>
+  <p>Se a palavra <b>JÁ TEM a letra S</b>, o diminutivo é com <b>S</b>: casa→<b>casinha</b>, princesa→princesinha, coisa→coisinha, rosa→rosinha.</p>
+  <p>Se a última sílaba <b>NÃO tem S</b>, o diminutivo leva <b>Z</b>: irmã→irmãzinha, papel→papelzinho, chapéu→chapeuzinho, pé→pezinho.</p>`,
+  words:[["Com S na palavra","→ -sinho/-sinha (casinha, coisinha)"],
+         ["Sem S na palavra","→ -zinho/-zinha (papelzinho, pezinho)"],
+         ["Dica","olhe sempre a última sílaba"]],
+  qs:[{q:"O DIMINUTIVO de “casa” é:",o:["cazinha","casinha","casazinha","casona"],c:1,
+       ex:"Casa já tem S, então mantém o S: casinha."},
+      {q:"O DIMINUTIVO de “pé” é:",o:["pesinho","pezinho","peizinho","pèzinho"],c:1,
+       ex:"Pé não tem S, então usa Z: pezinho."},
+      {q:"Por que “coisa” fica “coisinha”?",o:["porque já tem a letra S","porque não tem S","porque está no plural","porque é um verbo"],c:0,
+       ex:"Como a palavra coisa já tem S, o diminutivo mantém o S."}]},
+
+ {t:"Ortografia: Ç, S ou SS?",e:"🔤",
+  html:`<p>Esta é a regrinha da professora! O <b>Ç (cedilha)</b> tem som de S e aparece <b>antes de A, O, U</b>: canção, maçã, açúcar, cabeça, dança. O <b>Ç nunca começa uma palavra</b>.</p>
+  <p>O <b>SS</b> aparece <b>entre duas vogais</b>, com som forte de S: professora, passeio, passarinho, missa.</p>
+  <p>Já o <b>S</b> sozinho entre vogais costuma ter som de <b>Z</b>: desenho, casa, mesa.</p>`,
+  words:[["Ç","som de S antes de A, O, U (maçã, dança, açúcar)"],
+         ["SS","entre duas vogais (professora, passeio)"],
+         ["S entre vogais","som de Z (desenho, casa)"]],
+  qs:[{q:"Complete: “ma__ã” (a fruta).",o:["maçã (com Ç)","massã (com SS)","masã (com S)","maza (com Z)"],c:0,
+       ex:"O Ç tem som de S antes de A, O, U."},
+      {q:"Qual palavra está CORRETA?",o:["profesora","professora","profeçora","profezora"],c:1,
+       ex:"Usa-se SS entre duas vogais: professora."},
+      {q:"“cabe__a” (parte do corpo) fica:",o:["cabessa (SS)","cabeça (Ç)","cabesa (S)","cabeza (Z)"],c:1,
+       ex:"Som de S antes de A: usa-se Ç → cabeça."}]},
+
+ {t:"Pontuação: pequenos sinais, grandes sentidos",e:"❓",
+  html:`<p>Os <b>sinais de pontuação</b> ajudam a entender o que lemos.</p>
+  <p>O <b>ponto final ( . )</b> mostra que a frase terminou (Hoje fez sol.). O <b>ponto de interrogação ( ? )</b> é usado numa <b>pergunta</b> (Que horas são?).</p>
+  <p>O <b>ponto de exclamação ( ! )</b> mostra <b>espanto, alegria ou surpresa</b> (Que legal!). A <b>vírgula ( , )</b> faz uma <b>pequena pausa</b> e separa itens de uma lista (Comprei pão, leite e ovos.).</p>`,
+  words:[["Ponto final ( . )","a frase terminou"],
+         ["Interrogação ( ? )","pergunta"],
+         ["Exclamação ( ! )","emoção/surpresa"],
+         ["Vírgula ( , )","pausa e listas"]],
+  qs:[{q:"Qual sinal usamos no fim de “Que horas são”?",o:["ponto final ( . )","ponto de interrogação ( ? )","ponto de exclamação ( ! )","vírgula ( , )"],c:1,
+       ex:"É uma pergunta, então usamos o ( ? )."},
+      {q:"Qual sinal combina com “Que legal”?",o:["ponto de exclamação ( ! )","ponto de interrogação ( ? )","ponto final ( . )","vírgula ( , )"],c:0,
+       ex:"Mostra alegria e emoção: ( ! )."},
+      {q:"A vírgula ( , ) serve para:",o:["mostrar que a frase terminou","fazer pausa e separar itens de uma lista","indicar uma pergunta","mostrar muita emoção"],c:1,
+       ex:"Ex.: Comprei pão, leite e ovos."}]},
+
+ {t:"Verbos: ação, tempo e pessoa",e:"🏃",
+  html:`<p>O <b>VERBO</b> indica uma <b>ação</b> (correr, brincar), um <b>estado</b> (ser, estar), um <b>fenômeno da natureza</b> (chover, trovejar) ou um <b>desejo</b> (sonhar, querer) — sempre ligado a um <b>tempo</b>.</p>
+  <p>O verbo muda de forma (a gente diz que ele <b>flexiona</b>) para mostrar quando acontece: <b>PASSADO</b> (Ontem ela jogou), <b>PRESENTE</b> (Hoje ela joga) e <b>FUTURO</b> (Amanhã ela jogará).</p>
+  <p>Também muda pela <b>pessoa</b>: eu sonho, tu sonhas, ele sonha, nós sonhamos, vós sonhais, eles sonham.</p>`,
+  words:[["Verbo","ação, estado, fenômeno ou desejo"],
+         ["Tempos","passado, presente e futuro"],
+         ["Flexiona","muda pelo tempo e pela pessoa"]],
+  qs:[{q:"Em “Amanhã ela viajará”, o verbo está no:",o:["passado","presente","futuro","nenhum tempo"],c:2,
+       ex:"“Amanhã” e a forma -ará mostram o futuro."},
+      {q:"Em “Ontem eu joguei bola”, o verbo está no:",o:["passado","presente","futuro","nenhum tempo"],c:0,
+       ex:"A ação já aconteceu (joguei) — passado."},
+      {q:"Qual destas palavras é um VERBO?",o:["mesa","correr","azul","três"],c:1,
+       ex:"Correr indica uma ação: é verbo."}]},
+
+ {t:"Revisão dos Detetives",e:"🎯",
+  html:`<p>🕵️ Hora do <b>desafio final</b>! Misturei tudo o que estudamos: anúncio, grau, gênero, número, ortografia, pontuação e verbos. Mostre que você é um verdadeiro Detetive das Palavras! 🌟</p>`,
+  words:[["Dica do Detetive Turbo","releia os blocos que achou difíceis antes de responder. Você consegue! 💪"]],
+  qs:[{q:"A palavra “professora” escreve-se com:",o:["um S só","SS","Ç","Z"],c:1,
+       ex:"Usa-se SS entre duas vogais: professora."},
+      {q:"O PLURAL de “jornal” é:",o:["jornais","jornals","jornales","jornalzinho"],c:0,
+       ex:"Palavras em -al trocam para -ais."},
+      {q:"Complete: “Amanhã eles ______ ao museu.” (visitar)",o:["visitaram","visitam","visitarão","visitar"],c:2,
+       ex:"“Amanhã” + eles pede o futuro: visitarão."}]}
 ];
 
-var PEGS=[
-"Diminutivo e aumentativo nem sempre são tamanho — podem mostrar carinho (mãezinha) ou algo especial (presentão).",
-"O anúncio NÃO aparece só em jornais — pode estar na TV, na internet, nas ruas e em revistas.",
-"Público-alvo é o grupo de pessoas para quem o anúncio é feito (não é o dono do produto).",
-"“Coisinha” e “casinha” são com S (a palavra já tem S); mas “papelzinho” é com Z.",
-"O Ç vem antes de A, O, U (maçã, dança, açúcar) e nunca começa a palavra.",
-"Entre duas vogais, SS tem som de S (professora, passeio); o S sozinho costuma ter som de Z (casa, desenho).",
-"Uma pergunta pede ponto de interrogação ( ? ), não ponto final.",
-"Plural de “animal” é “animais”; de “flor” é “flores”; de “homem” é “homens”.",
-"“Astronauta” não muda no feminino — muda só o artigo (o/a astronauta).",
-"O verbo muda pelo TEMPO (passado/presente/futuro) e pela PESSOA (eu, tu, ele, nós...)."
-];
-
-var state={ans:{},self:{},done:{}};
-
-function load(){
-  var raw=null;
-  try{ raw=localStorage.getItem(KEY); }catch(e){ raw=mem[KEY]||null; }
-  if(raw){ try{ state=JSON.parse(raw); }catch(e){} }
-  if(!state.ans) state.ans={}; if(!state.self) state.self={}; if(!state.done) state.done={};
-}
-function save(){
-  var raw=JSON.stringify(state);
-  try{ localStorage.setItem(KEY,raw); }catch(e){ mem[KEY]=raw; }
-  var d=new Date();
-  document.getElementById('stamp').textContent="salvo "+d.toLocaleDateString('pt-BR')+" "+d.toLocaleTimeString('pt-BR').slice(0,5);
-}
-
-function render(){
-  var host=document.getElementById('blocks'); host.innerHTML="";
-  DATA.forEach(function(b,bi){
-    var unlocked = bi===0 || state.done[bi-1];
-    var div=document.createElement('div');
-    div.className="block "+b.cls+(unlocked?"":" locked")+(state.done[bi]?" done":"");
-    var qhtml="";
-    b.qs.forEach(function(qq,qi){
-      var val=(state.ans[bi]&&state.ans[bi][qi])||"";
-      var sv=(state.self[bi]&&state.self[bi][qi])||"";
-      var shown=state.done[bi]?"show":"";
-      qhtml+='<div class="q">'+
-        '<label>✏️ '+(qi+1)+'. '+qq.q+'</label>'+
-        '<textarea data-b="'+bi+'" data-q="'+qi+'" oninput="onType('+bi+')" '+(state.done[bi]?'readonly':'')+'>'+esc(val)+'</textarea>'+
-        '<div class="model '+shown+'" id="m'+bi+'_'+qi+'"><b>💡 Resposta modelo:</b> '+qq.m+'</div>'+
-        '<div class="selfeval '+shown+'" id="s'+bi+'_'+qi+'">Como você se saiu? '+
-          '<label><input type="radio" name="se'+bi+'_'+qi+'" value="ok" '+(sv==="ok"?"checked":"")+' onchange="setSelf('+bi+','+qi+',\'ok\')"> ✅ Acertei</label>'+
-          '<label><input type="radio" name="se'+bi+'_'+qi+'" value="rev" '+(sv==="rev"?"checked":"")+' onchange="setSelf('+bi+','+qi+',\'rev\')"> 🔁 Preciso revisar</label>'+
-        '</div>'+
-      '</div>';
-    });
-    var btn = state.done[bi] ? '' :
-      '<button class="btn" id="chk'+bi+'" onclick="conferir('+bi+')" disabled>🔍 Conferir bloco</button>';
-    div.innerHTML=
-      '<h2 onclick="toggle('+bi+')"><span>'+b.icon+' Bloco '+(bi+1)+': '+b.title+'</span>'+
-        '<span class="done-tag">✔ feito</span></h2>'+
-      '<div class="body">'+
-        '<div class="read">'+b.read+'</div>'+
-        '<div class="keys">🔑 <b>Palavras importantes:</b> '+b.keys+'</div>'+
-        qhtml+ btn +
-      '</div>';
-    host.appendChild(div);
+let st=JSON.parse(localStorage.getItem(KEY)||'null')||{ans:{}};
+const box=document.getElementById('blocks');
+B.forEach((b,i)=>{
+  const cor=CORES[i%CORES.length];
+  const d=document.createElement('div');d.className='block';d.id='b'+i;
+  let qh='';
+  b.qs.forEach((q,j)=>{
+    let opts='';
+    q.o.forEach((o,k)=>{opts+=`<button class="opt" id="o${i}_${j}_${k}" onclick="pick(${i},${j},${k})">${o}</button>`;});
+    qh+=`<div class="qbox"><div class="qq">🔎 ${q.q}</div>${opts}<div class="fb" id="f${i}_${j}"></div></div>`;
   });
-  var openIdx=0;
-  for(var i=0;i<DATA.length;i++){ if(!state.done[i]){ openIdx=i; break; } if(i===DATA.length-1) openIdx=i; }
-  var blocks=document.querySelectorAll('.block');
-  if(blocks[openIdx] && !blocks[openIdx].classList.contains('locked')) blocks[openIdx].classList.add('open');
-  updateProgress();
-  DATA.forEach(function(b,bi){ checkBtnState(bi); });
-}
+  let wh='<div class="words"><h4>📌 Palavras importantes</h4><ul>';
+  b.words.forEach(w=>{wh+=`<li><b>${w[0]}:</b> ${w[1]}</li>`;});wh+='</ul></div>';
+  d.innerHTML=`<div class="bhead" style="background:${cor}" onclick="toggle(${i})">
+      <span class="n">${b.e}</span> ${i<B.length-1?('Bloco '+(i+1)+' — '):''}${b.t}
+      <span class="chev">▾</span></div>
+    <div class="bbody">${b.html}${wh}${qh}
+      <div class="bdone" id="done${i}">✅ Bloco concluído! Mandou bem! ⭐</div></div>`;
+  box.appendChild(d);
+});
 
-function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-
-function toggle(bi){
-  var blocks=document.querySelectorAll('.block');
-  if(blocks[bi].classList.contains('locked')){ toast("🔒 Termine o bloco anterior primeiro!"); return; }
-  blocks[bi].classList.toggle('open');
+function toggle(i){document.getElementById('b'+i).classList.toggle('open');}
+function pick(i,j,k){
+  const q=B[i].qs[j];
+  if(st.ans[`${i}_${j}`]!==undefined) return;
+  st.ans[`${i}_${j}`]=k;
+  const chosen=document.getElementById(`o${i}_${j}_${k}`);
+  const fb=document.getElementById(`f${i}_${j}`);
+  if(k===q.c){chosen.classList.add('right');chosen.innerHTML+='<span class="mk">✔</span>';
+    fb.className='fb ok show';fb.innerHTML='🎉 Isso mesmo! '+q.ex;}
+  else{chosen.classList.add('wrong');chosen.innerHTML+='<span class="mk">✘</span>';
+    const right=document.getElementById(`o${i}_${j}_${q.c}`);right.classList.add('right');
+    fb.className='fb no show';fb.innerHTML='🙂 Quase! A certa é a verde. '+q.ex;}
+  B[i].qs[j].o.forEach((_,kk)=>{document.getElementById(`o${i}_${j}_${kk}`).style.pointerEvents='none';});
+  save();check(i);update();
 }
-function onType(bi){
-  var tas=document.querySelectorAll('textarea[data-b="'+bi+'"]');
-  if(!state.ans[bi]) state.ans[bi]={};
-  tas.forEach(function(t){ state.ans[bi][t.getAttribute('data-q')]=t.value; });
-  checkBtnState(bi); save();
+function check(i){
+  const total=B[i].qs.length;
+  let ans=0;B[i].qs.forEach((q,j)=>{if(st.ans[`${i}_${j}`]!==undefined)ans++;});
+  if(ans===total){document.getElementById('done'+i).classList.add('show');}
 }
-function checkBtnState(bi){
-  var btn=document.getElementById('chk'+bi); if(!btn) return;
-  var tas=document.querySelectorAll('textarea[data-b="'+bi+'"]');
-  var ok=true;
-  tas.forEach(function(t){ if(t.value.trim().length<3) ok=false; });
-  btn.disabled=!ok;
+function update(){
+  let stars=0,doneBlocks=0;
+  B.forEach((b,i)=>{let a=0;b.qs.forEach((q,j)=>{const v=st.ans[`${i}_${j}`];if(v!==undefined){a++;if(v===q.c)stars++;}});
+    if(a===b.qs.length)doneBlocks++;});
+  document.getElementById('starct').textContent=stars;
+  document.getElementById('pbar').style.width=(doneBlocks/B.length*100)+'%';
+  document.getElementById('trophy').classList.toggle('show',doneBlocks===B.length);
 }
-function conferir(bi){
-  if(!state.done[bi]){ state.done[bi]=true; }
-  var b=DATA[bi];
-  b.qs.forEach(function(q,qi){
-    var m=document.getElementById('m'+bi+'_'+qi); if(m) m.classList.add('show');
-    var s=document.getElementById('s'+bi+'_'+qi); if(s) s.classList.add('show');
+function restore(){
+  Object.keys(st.ans).forEach(key=>{
+    const [i,j]=key.split('_').map(Number);const k=st.ans[key];const q=B[i].qs[j];
+    const chosen=document.getElementById(`o${i}_${j}_${k}`);const fb=document.getElementById(`f${i}_${j}`);
+    if(!chosen)return;
+    if(k===q.c){chosen.classList.add('right');chosen.innerHTML+='<span class="mk">✔</span>';fb.className='fb ok show';fb.innerHTML='🎉 Isso mesmo! '+q.ex;}
+    else{chosen.classList.add('wrong');chosen.innerHTML+='<span class="mk">✘</span>';
+      document.getElementById(`o${i}_${j}_${q.c}`).classList.add('right');fb.className='fb no show';fb.innerHTML='🙂 Quase! A certa é a verde. '+q.ex;}
+    q.o.forEach((_,kk)=>{const el=document.getElementById(`o${i}_${j}_${kk}`);if(el)el.style.pointerEvents='none';});
   });
-  save(); render();
-  toast("✅ Bloco conferido! Próximo bloco liberado 🚀");
-  var blocks=document.querySelectorAll('.block');
-  if(blocks[bi+1]){ blocks[bi].classList.remove('open'); blocks[bi+1].classList.add('open');
-    blocks[bi+1].scrollIntoView({behavior:'smooth',block:'center'}); }
-  if(allDone()){ document.getElementById('finalbox').style.display='block'; }
+  B.forEach((b,i)=>check(i));update();
+  document.getElementById('b0').classList.add('open');
 }
-function setSelf(bi,qi,v){ if(!state.self[bi]) state.self[bi]={}; state.self[bi][qi]=v; save(); updateProgress(); }
-function allDone(){ for(var i=0;i<DATA.length;i++){ if(!state.done[i]) return false; } return true; }
-function updateProgress(){
-  var doneN=0; for(var i=0;i<DATA.length;i++){ if(state.done[i]) doneN++; }
-  document.getElementById('bar').style.width=(doneN/DATA.length*100)+"%";
-  var stars=0;
-  for(var b in state.self){ for(var q in state.self[b]){ if(state.self[b][q]==="ok") stars++; } }
-  document.getElementById('score').textContent="⭐ "+stars+" estrela"+(stars===1?"":"s")+" · "+doneN+"/"+DATA.length+" blocos";
-  if(allDone()) document.getElementById('finalbox').style.display='block';
-}
-
-(function(){ var h=document.getElementById('pegs');
-  PEGS.forEach(function(p,i){ var d=document.createElement('div'); d.className="peg";
-    d.innerHTML="⚠️ "+(i+1)+". "+p; h.appendChild(d); }); })();
-
-function exportar(){
-  var blob=new Blob([JSON.stringify(state)],{type:"application/json"});
-  var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-  a.download="leitura_portugues_3ano.json"; a.click();
-  toast("📥 Progresso exportado!");
-}
-function importar(ev){
-  var f=ev.target.files[0]; if(!f) return; var r=new FileReader();
-  r.onload=function(){ try{ state=JSON.parse(r.result); save(); render(); toast("📤 Progresso importado!"); }catch(e){ toast("❌ Arquivo inválido"); } };
-  r.readAsText(f);
-}
-function pedirZerar(){ document.getElementById('modaltext').textContent="Quer mesmo apagar todo o seu progresso da Leitura?";
-  document.getElementById('modalyes').onclick=doZerar; document.getElementById('modalbg').classList.add('show'); }
-function fecharModal(){ document.getElementById('modalbg').classList.remove('show'); }
-function doZerar(){ state={ans:{},self:{},done:{}}; save(); fecharModal(); render();
-  document.getElementById('finalbox').style.display='none'; toast("🗑️ Progresso zerado!"); }
-function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); },2200); }
-
-load(); render();
+function save(){localStorage.setItem(KEY,JSON.stringify(st));}
+function resetAll(){if(confirm('Quer recomeçar a Leitura Guiada do zero?')){localStorage.removeItem(KEY);location.reload();}}
+restore();
 </script>
 </body>
 </html>
