@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa Mental · Detetives das Palavras · Português 3º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--roxo:#6c4bd8;--roxo2:#8a6bf0;--lil:#efeafc;--amarelo:#ffd23f;--laranja:#ff8c42;--azul:#3fa9e8;--rosa:#ff7eb6;--verde:#1f9d55;--ink:#2b2440;--dim:#7a6f92;--red:#ef5a6f}
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#efeafc,#f6f2ff);font-family:'Nunito',system-ui,sans-serif;color:var(--ink);line-height:1.5;padding-bottom:70px}
+  h1,h2,h3,.baloo{font-family:'Baloo 2','Nunito',sans-serif}
+  header{background:linear-gradient(120deg,#6c4bd8,#8a6bf0);color:#fff;padding:18px 16px;border-bottom:6px solid var(--amarelo);box-shadow:0 6px 0 #4b2fa8}
+  .wrap{max-width:960px;margin:0 auto;padding:0 16px}
+  .titlerow{display:flex;align-items:center;gap:14px}.m{font-size:2.6rem}
+  h1{margin:0;font-size:1.7rem;text-shadow:0 2px 0 rgba(0,0,0,.15)}.sub{font-size:.95rem;opacity:.95}
+  .hint{background:#fff;border:3px dashed var(--roxo2);border-radius:16px;padding:12px 16px;margin:18px 0;font-size:1.02rem}
+  .hint b{color:var(--roxo)}
+  .trilha{background:linear-gradient(120deg,#fff6d6,#ffe9a8);border:4px solid var(--laranja);border-radius:22px;padding:16px 18px;margin:16px 0}
+  .trilha h2{margin:0 0 10px;color:var(--laranja);text-align:center}
+  .steps{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+  .step{background:#fff;border:3px solid var(--roxo2);border-radius:16px;padding:8px 12px;font-weight:800;font-family:'Baloo 2'}
+  .arrow{font-size:1.5rem;color:var(--laranja)}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin:16px 0}
+  .card{background:#fff;border-radius:20px;box-shadow:0 5px 0 rgba(0,0,0,.08);overflow:hidden;border:3px solid #e7defc}
+  .card .top{padding:14px 16px;color:#fff;font-family:'Baloo 2';font-size:1.15rem;display:flex;align-items:center;gap:10px}
+  .card .top .em{font-size:1.6rem}
+  .card .body{padding:14px 16px}
+  .card .body p{margin:.3em 0;font-size:1.02rem}
+  .more{display:none;margin-top:8px;background:var(--lil);border-radius:12px;padding:10px 12px;border-left:5px solid var(--roxo2)}
+  .more.show{display:block;animation:pop .3s}
+  @keyframes pop{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+  .btn{background:var(--roxo);color:#fff;border:none;border-radius:12px;padding:8px 14px;font-family:'Baloo 2';font-size:.98rem;cursor:pointer;box-shadow:0 3px 0 #4b2fa8;margin-top:8px}
+  .btn.q{background:var(--laranja);box-shadow:0 3px 0 #c56a1f}
+  .mini{margin-top:10px;background:#fffdf2;border:3px solid var(--amarelo);border-radius:14px;padding:10px 12px;display:none}
+  .mini.show{display:block}
+  .mini .qq{font-weight:800;margin-bottom:6px}
+  .opt{display:block;width:100%;text-align:left;background:#fff;border:3px solid #eadff9;border-radius:10px;padding:9px 12px;margin:6px 0;font-family:inherit;font-size:1rem;cursor:pointer}
+  .opt:hover{border-color:var(--roxo2)}
+  .opt.right{border-color:var(--verde);background:#e7fbee;color:#1a6b3c;font-weight:800}
+  .opt.wrong{border-color:var(--red);background:#ffeef0;color:#a23}
+  .fb{margin-top:6px;font-size:.95rem;display:none}
+  .fb.show{display:block}
+  .resumao{background:linear-gradient(120deg,#e9f0ff,#efeafc);border:4px solid var(--azul);border-radius:22px;padding:16px 18px;margin:18px 0}
+  .resumao h2{margin:0 0 8px;color:var(--azul);text-align:center}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .chip{background:#fff;border:3px solid var(--roxo2);border-radius:20px;padding:6px 12px;font-weight:800;font-size:.95rem}
+  .savebar{position:fixed;bottom:0;left:0;right:0;background:#ffffffee;border-top:3px solid var(--roxo2);padding:8px 14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  a.nav{background:var(--roxo);color:#fff;border-radius:12px;padding:9px 16px;font-family:'Baloo 2';text-decoration:none;box-shadow:0 3px 0 #4b2fa8}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="titlerow"><div class="m">🕵️</div><div>
+    <h1>Mapa Mental — Detetives das Palavras</h1>
+    <div class="sub">Português · 3º ano · Prova 01/09 — a visão geral de tudo!</div>
+  </div></div>
+</div></header>
+
+<div class="wrap">
+  <div class="hint">🕵️ <b>Detetive Turbo:</b> este é o nosso <b>mapa da investigação</b>! Cada cartão tem um resumo. Clique em <b>“Ver mais”</b> para descobrir detalhes e em <b>“Testar”</b> para um mini-desafio. 🔎</div>
+
+  <div class="trilha">
+    <h2>🧭 A Trilha das Palavras</h2>
+    <div class="steps">
+      <div class="step">📣 Anúncio</div><span class="arrow">➜</span>
+      <div class="step">🔤 Substantivos</div><span class="arrow">➜</span>
+      <div class="step">✏️ Ortografia</div><span class="arrow">➜</span>
+      <div class="step">❓ Pontuação</div><span class="arrow">➜</span>
+      <div class="step">🏃 Verbos</div>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="resumao">
+    <h2>⭐ Resumão da Prova — palavras-chave</h2>
+    <div class="chips">
+      <span class="chip">📣 Anúncio</span>
+      <span class="chip">🎯 Público-alvo</span>
+      <span class="chip">🛍️ Publicitário</span>
+      <span class="chip">📢 Conscientização</span>
+      <span class="chip">⬆️ Aumentativo</span>
+      <span class="chip">⬇️ Diminutivo</span>
+      <span class="chip">♂️ Masculino</span>
+      <span class="chip">♀️ Feminino</span>
+      <span class="chip">1️⃣ Singular</span>
+      <span class="chip">🔢 Plural</span>
+      <span class="chip">✏️ -inho/-zinho/-sinho</span>
+      <span class="chip">🔤 Ç · S · SS</span>
+      <span class="chip">❓ Pontuação</span>
+      <span class="chip">🏃 Verbo</span>
+      <span class="chip">⏰ Passado/Presente/Futuro</span>
+    </div>
+  </div>
+</div>
+
+<div class="savebar">
+  <a class="nav" href="leitura-guiada.html">📖 Ler tudo (Leitura Guiada)</a>
+  <a class="nav" href="index.html">⌂ Início</a>
+</div>
+
+<script>
+const C=[
+ {cor:'#6c4bd8',em:'📣',t:'Anúncio & público-alvo',resumo:'Texto para divulgar algo (produto, serviço, evento ou ideia) e convencer as pessoas.',
+  mais:'O público-alvo é o grupo de pessoas para quem o anúncio foi feito. Há o publicitário (vende/troca/aluga) e a campanha de conscientização (ensina ou alerta). Pode aparecer na TV, internet, ruas e revistas — não só em jornais.',
+  q:'A campanha do Ibama sobre proteger animais é…',o:['campanha de conscientização','anúncio que vende'],c:0,ex:'Ela ensina e alerta, não vende nada.'},
+ {cor:'#ff8c42',em:'⚙️',t:'Grau: aumentativo × diminutivo',resumo:'Diminutivo = pequeno (-inho/-inha). Aumentativo = grande (-ão). Podem mostrar carinho ou algo especial.',
+  mais:'gato → gatinho (D) · gato → gatão (A). Nem sempre é tamanho: mãezinha = carinho; presentão = especial.',
+  q:'O diminutivo de “casa” é…',o:['casinha','casarão'],c:0,ex:'Diminutivo usa -inho/-inha.'},
+ {cor:'#8a6bf0',em:'🚻',t:'Gênero & Número',resumo:'Gênero: masculino (o/um) e feminino (a/uma). Número: singular (um só) e plural (mais de um).',
+  mais:'campeão → campeã (feminino). Plural: -AL→-AIS (animal→animais), -M→-NS (homem→homens), -R/-Z→-ES (flor→flores). O astronauta / a astronauta muda só o artigo.',
+  q:'O plural de “animal” é…',o:['animais','animals'],c:0,ex:'Palavras em -al viram -ais.'},
+ {cor:'#e07a1f',em:'✏️',t:'Ortografia: -inho e Ç/S/SS',resumo:'Diminutivo: com S se a palavra já tem S (casinha); com Z se não tem (papelzinho). E o Ç/S/SS.',
+  mais:'Ç antes de A, O, U (maçã, dança, açúcar). SS entre 2 vogais (professora, passeio). S entre vogais tem som de Z (casa, desenho).',
+  q:'“ma__ã” (a fruta) fica…',o:['maçã (Ç)','massã (SS)'],c:0,ex:'O Ç vem antes de A/O/U.'},
+ {cor:'#3fa9e8',em:'❓',t:'Pontuação',resumo:'. a frase terminou · ? pergunta · ! emoção/surpresa · , pausa e listas.',
+  mais:'Hoje fez sol. (ponto final) · Que horas são? (interrogação) · Que legal! (exclamação) · Comprei pão, leite e ovos. (vírgula).',
+  q:'“Que horas são__” termina com…',o:['?','!'],c:0,ex:'É uma pergunta: ponto de interrogação.'},
+ {cor:'#1f9d55',em:'🏃',t:'Verbos',resumo:'Palavra de ação, estado, fenômeno ou desejo, ligada a um tempo. Muda pelo tempo e pela pessoa.',
+  mais:'Passado: ontem ela jogou. Presente: hoje ela joga. Futuro: amanhã ela jogará. Pessoas: eu sonho, nós sonhamos...',
+  q:'“Amanhã ela viajará” está no…',o:['futuro','passado'],c:0,ex:'“Amanhã” + -ará mostram o futuro.'}
+];
+const grid=document.getElementById('grid');
+C.forEach((c,i)=>{
+  const d=document.createElement('div');d.className='card';
+  let opts='';c.o.forEach((o,k)=>{opts+=`<button class="opt" id="mo${i}_${k}" onclick="pick(${i},${k})">${o}</button>`;});
+  d.innerHTML=`<div class="top" style="background:${c.cor}"><span class="em">${c.em}</span>${c.t}</div>
+    <div class="body"><p>${c.resumo}</p>
+      <button class="btn" onclick="this.nextElementSibling.classList.toggle('show')">🔎 Ver mais</button>
+      <div class="more">${c.mais}</div>
+      <button class="btn q" onclick="this.nextElementSibling.classList.toggle('show')">🎯 Testar</button>
+      <div class="mini"><div class="qq">${c.q}</div>${opts}<div class="fb" id="mf${i}"></div></div>
+    </div>`;
+  grid.appendChild(d);
+});
+function pick(i,k){
+  const c=C[i];const fb=document.getElementById('mf'+i);const el=document.getElementById(`mo${i}_${k}`);
+  c.o.forEach((_,kk)=>{document.getElementById(`mo${i}_${kk}`).style.pointerEvents='none';});
+  if(k===c.c){el.classList.add('right');fb.className='fb show';fb.style.color='#1a6b3c';fb.innerHTML='🎉 Isso! '+c.ex;}
+  else{el.classList.add('wrong');document.getElementById(`mo${i}_${c.c}`).classList.add('right');fb.className='fb show';fb.style.color='#a23';fb.innerHTML='🙂 A certa é a verde. '+c.ex;}
+}
+</script>
+</body>
+</html>
