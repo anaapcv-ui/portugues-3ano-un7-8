@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jogo Verdadeiro ou Falso · Detetives das Palavras · Português 3º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--roxo:#6c4bd8;--roxo2:#8a6bf0;--amarelo:#ffd23f;--laranja:#ff8c42;--azul:#3fa9e8;--verde:#1f9d55;--ink:#2b2440;--dim:#7a6f92;--red:#ef5a6f}
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#efeafc,#f6f2ff);font-family:'Nunito',system-ui,sans-serif;color:var(--ink);line-height:1.5;padding-bottom:70px}
+  h1,h2,h3,.baloo{font-family:'Baloo 2','Nunito',sans-serif}
+  header{background:linear-gradient(120deg,#6c4bd8,#8a6bf0);color:#fff;padding:18px 16px;border-bottom:6px solid var(--amarelo);box-shadow:0 6px 0 #4b2fa8}
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px}
+  .titlerow{display:flex;align-items:center;gap:14px}.m{font-size:2.6rem}
+  h1{margin:0;font-size:1.6rem;text-shadow:0 2px 0 rgba(0,0,0,.15)}.sub{font-size:.95rem;opacity:.95}
+  .hud{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap}
+  .bar{flex:1;min-width:140px;height:16px;background:#efe6ff;border:3px solid #4b2fa8;border-radius:20px;overflow:hidden}
+  .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--amarelo),var(--laranja));transition:.4s}
+  .pill{background:#fff;border-radius:20px;padding:4px 12px;font-weight:800;border:3px solid var(--amarelo);color:var(--laranja);white-space:nowrap}
+  .card{background:#fff;border-radius:22px;box-shadow:0 6px 0 rgba(0,0,0,.08);border:3px solid #e7defc;padding:22px 20px;margin:20px 0;text-align:center}
+  .qn{color:var(--dim);font-weight:800}
+  .frase{font-family:'Baloo 2';font-size:1.5rem;margin:14px 0 18px;line-height:1.35}
+  .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .vf{border:none;border-radius:16px;padding:16px 26px;font-family:'Baloo 2';font-size:1.3rem;cursor:pointer;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.2)}
+  .v{background:var(--verde)} .f{background:var(--red)}
+  .vf:hover{transform:translateY(-2px)}
+  .vf:disabled{opacity:.6;cursor:default;transform:none}
+  .fb{display:none;margin-top:16px;padding:14px;border-radius:16px;font-size:1.05rem;font-weight:700}
+  .fb.show{display:block;animation:pop .3s}
+  @keyframes pop{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
+  .fb.ok{background:#e7fbee;color:#1a6b3c;border:3px solid var(--verde)}
+  .fb.no{background:#fff3f4;color:#a23;border:3px solid var(--red)}
+  .next{margin-top:14px;background:var(--laranja);color:#fff;border:none;border-radius:14px;padding:12px 22px;font-family:'Baloo 2';font-size:1.1rem;cursor:pointer;box-shadow:0 4px 0 #c56a1f;display:none}
+  .next.show{display:inline-block}
+  .final{display:none;text-align:center;background:linear-gradient(120deg,#fff3c4,#ffe08a);border:4px solid var(--laranja);border-radius:24px;padding:26px 20px;margin:20px 0}
+  .final.show{display:block;animation:pop .4s}
+  .final .big{font-size:3.6rem}
+  .final h2{color:var(--laranja);margin:6px 0}
+  .final .score{font-size:2.2rem;font-family:'Baloo 2';color:var(--roxo)}
+  .again{margin-top:12px;background:var(--roxo);color:#fff;border:none;border-radius:16px;padding:14px 24px;font-family:'Baloo 2';font-size:1.2rem;cursor:pointer;box-shadow:0 5px 0 #4b2fa8}
+  .savebar{position:fixed;bottom:0;left:0;right:0;background:#ffffffee;border-top:3px solid var(--roxo2);padding:8px 14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  a.nav{background:var(--roxo);color:#fff;border-radius:12px;padding:9px 16px;font-family:'Baloo 2';text-decoration:none;box-shadow:0 3px 0 #4b2fa8}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="titlerow"><div class="m">🕵️</div><div>
+    <h1>Verdadeiro ou Falso — Detetives</h1>
+    <div class="sub">Português · 3º ano · 12 desafios por rodada!</div>
+  </div></div>
+  <div class="hud">
+    <div class="bar"><i id="pbar"></i></div>
+    <div class="pill">⭐ <span id="stars">0</span></div>
+    <div class="pill" style="border-color:var(--azul);color:var(--azul)"><span id="qnum">1</span>/12</div>
+  </div>
+</div></header>
+
+<div class="wrap">
+  <div class="card" id="card">
+    <div class="qn">Desafio <span id="cn">1</span></div>
+    <div class="frase" id="frase">...</div>
+    <div class="btns">
+      <button class="vf v" id="btnV" onclick="answer(true)">✔ Verdadeiro</button>
+      <button class="vf f" id="btnF" onclick="answer(false)">✘ Falso</button>
+    </div>
+    <div class="fb" id="fb"></div>
+    <button class="next" id="next" onclick="nextQ()">Próximo ▶</button>
+  </div>
+
+  <div class="final" id="final">
+    <div class="big">🏆🕵️</div>
+    <h2>Fim de jogo!</h2>
+    <div class="score"><span id="fscore">0</span> / 12 ⭐</div>
+    <p id="fmsg"></p>
+    <button class="again" onclick="start()">🔁 Jogar de novo</button>
+  </div>
+</div>
+
+<div class="savebar">
+  <a class="nav" href="resumo.html">🗒️ Resumo</a>
+  <a class="nav" href="simulado.html">📝 Simulado</a>
+  <a class="nav" href="index.html">⌂ Início</a>
+</div>
+
+<script>
+const BANCO=[
+ ['O anúncio serve para divulgar algo e convencer as pessoas.',true,'É a função do anúncio!'],
+ ['O público-alvo é o grupo de pessoas para quem o anúncio foi feito.',true,'Isso mesmo!'],
+ ['Todo anúncio só pode aparecer em jornais.',false,'Também aparece na TV, internet, ruas e revistas.'],
+ ['A campanha de conscientização quer vender produtos.',false,'Ela quer ENSINAR ou ALERTAR, não vender.'],
+ ['O diminutivo de “gato” é “gatinho”.',true,'Diminutivo usa -inho/-inha.'],
+ ['A palavra “casarão” está no diminutivo.',false,'Está no aumentativo (grande).'],
+ ['O diminutivo pode mostrar carinho, como em “mãezinha”.',true,'Nem sempre é tamanho — pode ser afeto!'],
+ ['A palavra “a professora” é do gênero masculino.',false,'Vem com “a”: é feminino.'],
+ ['O feminino de “campeão” é “campeã”.',true,'Palavras em -ão fazem o feminino em -ã, -ona ou -oa.'],
+ ['A palavra “astronauta” muda no feminino.',false,'Não muda a palavra; muda só o artigo (o/a astronauta).'],
+ ['O plural de “animal” é “animais”.',true,'Palavras em -al viram -ais.'],
+ ['O plural de “flor” é “flors”.',false,'O certo é “flores” (-r ganha -es).'],
+ ['“As casas” está no plural.',true,'Fala de mais de uma casa.'],
+ ['O diminutivo de “casa” é “cazinha”.',false,'É “casinha” — com S, porque casa já tem S.'],
+ ['“Chapéu” no diminutivo é “chapeuzinho”, com Z.',true,'Não tem S na última sílaba, então usa Z.'],
+ ['A palavra “maçã” escreve-se com Ç.',true,'O Ç vem antes de A, O, U.'],
+ ['A palavra “professora” escreve-se com um S só.',false,'É com SS (entre duas vogais).'],
+ ['Usamos o Ç antes de A, O e U.',true,'Ex.: maçã, dança, açúcar.'],
+ ['Numa pergunta usamos o ponto de exclamação.',false,'Numa pergunta usamos o ponto de interrogação ( ? ).'],
+ ['A vírgula serve para separar itens de uma lista.',true,'Ex.: pão, leite e ovos.'],
+ ['O verbo “viajará” está no futuro.',true,'A forma -ará mostra o futuro.'],
+ ['“Chover” é um verbo (fenômeno da natureza).',true,'O verbo também indica fenômenos da natureza.'],
+ ['O verbo muda de forma pelo tempo e pela pessoa.',true,'Ex.: eu sonho, nós sonhamos; ela joga, ela jogou.'],
+ ['“Ontem eu joguei” está no presente.',false,'“Ontem” e “joguei” mostram o passado.']
+];
+let rodada=[],idx=0,score=0;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function start(){
+  rodada=shuffle([...BANCO]).slice(0,12);idx=0;score=0;
+  document.getElementById('final').classList.remove('show');
+  document.getElementById('card').style.display='block';
+  document.getElementById('stars').textContent=0;
+  render();
+}
+function render(){
+  const it=rodada[idx];
+  document.getElementById('cn').textContent=idx+1;
+  document.getElementById('qnum').textContent=idx+1;
+  document.getElementById('frase').textContent='“'+it[0]+'”';
+  document.getElementById('fb').className='fb';document.getElementById('fb').innerHTML='';
+  document.getElementById('next').classList.remove('show');
+  document.getElementById('btnV').disabled=false;document.getElementById('btnF').disabled=false;
+  document.getElementById('pbar').style.width=(idx/12*100)+'%';
+}
+function answer(v){
+  const it=rodada[idx];const fb=document.getElementById('fb');
+  document.getElementById('btnV').disabled=true;document.getElementById('btnF').disabled=true;
+  const acertou=(v===it[1]);
+  if(acertou){score++;document.getElementById('stars').textContent=score;
+    fb.className='fb ok show';fb.innerHTML='🎉 Certíssimo! '+it[2];}
+  else{fb.className='fb no show';fb.innerHTML='🙂 Quase! A frase é <b>'+(it[1]?'VERDADEIRA':'FALSA')+'</b>. '+it[2];}
+  document.getElementById('next').classList.add('show');
+  document.getElementById('pbar').style.width=((idx+1)/12*100)+'%';
+}
+function nextQ(){idx++;if(idx>=12){showFinal();}else{render();}}
+function showFinal(){
+  document.getElementById('card').style.display='none';
+  const f=document.getElementById('final');f.classList.add('show');
+  document.getElementById('fscore').textContent=score;
+  const pct=Math.round(score/12*100);
+  let m;
+  if(score>=11)m='🌟 UAU! Você é um verdadeiro Detetive das Palavras! ('+pct+'% de acertos)';
+  else if(score>=8)m='😃 Muito bem! Você mandou super bem! ('+pct+'%)';
+  else if(score>=5)m='🙂 Bom trabalho! Dá uma revisada no Resumo e jogue de novo. ('+pct+'%)';
+  else m='💪 Vamos treinar mais! Volte na Leitura Guiada e tente outra vez. ('+pct+'%)';
+  document.getElementById('fmsg').textContent=m;
+}
+start();
+</script>
+</body>
+</html>
