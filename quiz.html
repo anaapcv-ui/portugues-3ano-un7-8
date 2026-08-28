@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz · Fábrica Mágica das Palavras</title>
+<style>
+  :root{--teal:#0e9e8e;--teal-d:#0a7d70;--red:#e63946;--red-d:#c22c39;--yellow:#ffd23f;
+    --purple:#7b5ea7;--ink:#2b2440;--paper:#fff8ef;--card:#fff;--ok:#1f9d55;--soft:#fdeecf;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Comic Sans MS','Trebuchet MS',Verdana,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+  header{background:linear-gradient(120deg,var(--purple),var(--teal));color:#fff;padding:18px 16px;text-align:center}
+  header h1{margin:.2em 0;font-size:1.7rem}
+  .robot{font-size:2.4rem}
+  nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;background:var(--ink);padding:8px}
+  nav a{color:#fff;text-decoration:none;background:rgba(255,255,255,.12);padding:6px 12px;border-radius:20px;font-size:.85rem;font-weight:bold}
+  nav a.active{background:var(--yellow);color:var(--ink)}
+  .wrap{max-width:760px;margin:0 auto;padding:14px}
+  .bar{background:#e7ddcf;border-radius:14px;height:18px;overflow:hidden;margin:10px 0}
+  .bar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--yellow));transition:width .4s}
+  .card{background:var(--card);border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 3px 10px rgba(0,0,0,.08);border:3px solid #eee}
+  .qh{font-weight:bold;font-size:1.1rem;margin-bottom:10px}
+  .opt{display:block;background:#faf7f0;border:2px solid #e3dccb;border-radius:12px;padding:10px 12px;margin:8px 0;cursor:pointer;font-size:1rem}
+  .opt:hover{border-color:var(--teal)}
+  .opt.sel{border-color:var(--purple);background:#f1ecf8}
+  .opt.right{border-color:var(--ok);background:#e9faf0}
+  .opt.wrong{border-color:var(--red);background:#fdeaec}
+  .opt .why{display:none;font-size:.9rem;margin-top:6px;color:#555}
+  .opt.reveal .why{display:block}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:22px;padding:12px 22px;font-weight:bold;font-size:1.05rem}
+  .btn{background:var(--teal);color:#fff}.btn:disabled{background:#c9c2b5;cursor:not-allowed}
+  .btn-y{background:var(--yellow);color:var(--ink)}
+  .center{text-align:center}
+  .result{background:linear-gradient(120deg,#fff3d6,#e9faf0);border-radius:16px;padding:20px;text-align:center;border:3px dashed var(--teal)}
+  .result h2{margin-top:0}
+  .stars{font-size:1.6rem}
+  .savebar{position:sticky;bottom:0;background:var(--ink);color:#fff;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:8px;font-size:.82rem}
+  .savebar button{padding:6px 12px;font-size:.82rem}
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;align-items:center;justify-content:center}
+  .modal-bg.show{display:flex}
+  .modal{background:#fff;border-radius:16px;padding:20px;max-width:340px;text-align:center}
+  .modal button{margin:8px 6px 0}
+  .toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--ok);color:#fff;padding:10px 18px;border-radius:20px;opacity:0;transition:opacity .3s;z-index:60;font-weight:bold}
+  .toast.show{opacity:1}
+  .tag{display:inline-block;background:var(--soft);border-radius:12px;padding:2px 10px;font-size:.78rem;color:var(--red-d);margin-bottom:6px}
+</style>
+</head>
+<body>
+<header>
+  <div class="robot">🤖🎯</div>
+  <h1>🎯 Quiz da Fábrica</h1>
+  <p>Português 3º ano · Unidades 7 e 8</p>
+</header>
+<nav>
+  <a href="index.html">🏠 Início</a>
+  <a href="leitura-guiada.html">📖 Leitura</a>
+  <a href="quiz.html" class="active">🎯 Quiz</a>
+  <a href="resumo.html">🗺️ Resumo</a>
+  <a href="simulado.html">📝 Simulado</a>
+</nav>
+<div class="wrap">
+  <p class="center">Marque a resposta certa em cada questão e clique em <b>Ver meu resultado</b>. O robô Turbo mostra o gabarito comentado no fim! 🧠</p>
+  <div class="bar"><span id="bar"></span></div>
+  <div id="quiz"></div>
+  <div class="center"><button class="btn" id="send" onclick="corrigir()" disabled>✅ Ver meu resultado</button></div>
+  <div id="result"></div>
+</div>
+
+<div class="savebar">
+  <span>💾 Salvamento automático</span><span id="stamp">—</span>
+  <button class="btn-y" onclick="exportar()">📥 Exportar</button>
+  <button class="btn-y" onclick="document.getElementById('imp').click()">📤 Importar</button>
+  <input type="file" id="imp" style="display:none" accept="application/json" onchange="importar(event)">
+  <button class="btn" onclick="pedirZerar()">🗑️ Zerar</button>
+</div>
+<div class="modal-bg" id="modalbg"><div class="modal"><p id="modaltext"></p>
+  <button class="btn" id="modalyes">Sim</button><button class="btn-y" onclick="fecharModal()">Não</button></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+var KEY="fabrica_pt3_quiz_v2", SEED=734, mem={};
+var QS=[
+ {tag:"Anúncio",q:"O principal objetivo de um anúncio é:",o:[
+   {t:"divulgar uma informação e convencer as pessoas.",ok:true,why:"É isso! O anúncio divulga algo e tenta convencer."},
+   {t:"contar uma história bem longa.",ok:false,why:"Isso é uma narrativa, não um anúncio."},
+   {t:"ensinar uma brincadeira.",ok:false,why:"Não é a função do anúncio."},
+   {t:"dar uma receita de bolo.",ok:false,why:"Isso é um texto de receita."}]},
+ {tag:"Anúncio",q:"O que é o PÚBLICO-ALVO de um anúncio?",o:[
+   {t:"o grupo de pessoas para quem o anúncio foi feito.",ok:true,why:"Certo! É quem o anúncio quer alcançar."},
+   {t:"a pessoa que desenhou o anúncio.",ok:false,why:"Essa é quem fez o anúncio, não o público."},
+   {t:"o preço do produto.",ok:false,why:"Preço é outra informação do anúncio."},
+   {t:"o jornal onde ele foi publicado.",ok:false,why:"O anúncio pode aparecer em vários lugares."}]},
+ {tag:"Anúncio",q:"O que PODE aparecer em um anúncio?",o:[
+   {t:"imagens, frases curtas e informações.",ok:true,why:"Tudo isso ajuda o anúncio a convencer."},
+   {t:"apenas números, sem nada mais.",ok:false,why:"Só números não formam um bom anúncio."},
+   {t:"somente páginas e páginas de texto.",ok:false,why:"Texto demais cansa; anúncio usa frases curtas."},
+   {t:"nada colorido, tudo cinza.",ok:false,why:"Cores e imagens é que chamam atenção."}]},
+ {tag:"Grau",q:"O DIMINUTIVO da palavra “gato” é:",o:[
+   {t:"gatinho",ok:true,why:"Diminutivo usa -inho/-inha."},
+   {t:"gatão",ok:false,why:"Esse é o aumentativo (grande)."},
+   {t:"gatos",ok:false,why:"Esse é o plural (mais de um)."},
+   {t:"gata",ok:false,why:"Esse é o feminino (gênero)."}]},
+ {tag:"Grau",q:"A palavra “casarão” está no grau:",o:[
+   {t:"aumentativo",ok:true,why:"A terminação -ão indica aumentativo (grande)."},
+   {t:"diminutivo",ok:false,why:"O diminutivo usa -inho/-inha (casinha)."},
+   {t:"feminino",ok:false,why:"Isso é gênero, não grau."},
+   {t:"plural",ok:false,why:"Isso é número, não grau."}]},
+ {tag:"Gênero",q:"Qual palavra está no gênero FEMININO?",o:[
+   {t:"a professora",ok:true,why:"Vem com “a”: é feminino."},
+   {t:"o menino",ok:false,why:"Vem com “o”: é masculino."},
+   {t:"o gato",ok:false,why:"Vem com “o”: é masculino."},
+   {t:"um cachorro",ok:false,why:"Vem com “um”: é masculino."}]},
+ {tag:"Gênero",q:"O FEMININO de “campeão” é:",o:[
+   {t:"campeã",ok:true,why:"Palavras em -ão fazem o feminino em -ã, -ona ou -oa."},
+   {t:"campeão",ok:false,why:"Esse é o masculino."},
+   {t:"campeões",ok:false,why:"Esse é o plural."},
+   {t:"campeãozinho",ok:false,why:"Esse é o diminutivo."}]},
+ {tag:"Número",q:"O PLURAL de “animal” é:",o:[
+   {t:"animais",ok:true,why:"Palavras em -al trocam para -ais."},
+   {t:"animals",ok:false,why:"Em português não fica assim."},
+   {t:"animales",ok:false,why:"Isso é espanhol, não português."},
+   {t:"animalzinho",ok:false,why:"Esse é o diminutivo."}]},
+ {tag:"Número",q:"O PLURAL de “flor” é:",o:[
+   {t:"flores",ok:true,why:"Palavras terminadas em -r ganham -es."},
+   {t:"florzinha",ok:false,why:"Esse é o diminutivo."},
+   {t:"florss",ok:false,why:"Não existe esse plural."},
+   {t:"flor",ok:false,why:"Assim continua no singular."}]},
+ {tag:"Ortografia",q:"Como se escreve o DIMINUTIVO de “casa”?",o:[
+   {t:"casinha",ok:true,why:"Casa já tem S, então mantém o S."},
+   {t:"cazinha",ok:false,why:"Errado: como já há S, não se usa Z."},
+   {t:"casazinha",ok:false,why:"Não é assim que se forma."},
+   {t:"casona",ok:false,why:"Isso é aumentativo."}]},
+ {tag:"Ortografia Ç/S/SS",q:"Complete corretamente: “ma__ã” (a fruta).",o:[
+   {t:"maçã (com Ç)",ok:true,why:"O Ç tem som de S antes de A, O, U."},
+   {t:"massã (com SS)",ok:false,why:"SS fica entre vogais, mas aqui o certo é Ç."},
+   {t:"masã (com S)",ok:false,why:"Aqui o som pede Ç, não S."},
+   {t:"maçssã",ok:false,why:"Não existe essa forma."}]},
+ {tag:"Ortografia Ç/S/SS",q:"Qual palavra está escrita CORRETAMENTE?",o:[
+   {t:"professora",ok:true,why:"Usa-se SS entre duas vogais."},
+   {t:"profesora",ok:false,why:"Falta um S: é com SS."},
+   {t:"profeçora",ok:false,why:"Aqui não se usa Ç."},
+   {t:"profezora",ok:false,why:"Não é com Z."}]},
+ {tag:"Pontuação",q:"Qual pontuação usamos no fim de “Que horas são”?",o:[
+   {t:"ponto de interrogação ( ? )",ok:true,why:"É uma pergunta, então usamos o ( ? )."},
+   {t:"ponto final ( . )",ok:false,why:"O ponto final é para frases que só terminam."},
+   {t:"vírgula ( , )",ok:false,why:"A vírgula faz pausa no meio da frase."},
+   {t:"ponto de exclamação ( ! )",ok:false,why:"O ( ! ) mostra emoção, não pergunta."}]},
+ {tag:"Pontuação",q:"Qual pontuação combina melhor com “Que legal”?",o:[
+   {t:"ponto de exclamação ( ! )",ok:true,why:"Mostra alegria e emoção."},
+   {t:"ponto de interrogação ( ? )",ok:false,why:"Não é uma pergunta."},
+   {t:"vírgula ( , )",ok:false,why:"A vírgula não fecha a frase."},
+   {t:"dois-pontos ( : )",ok:false,why:"Não é o sinal usado aqui."}]},
+ {tag:"Verbos",q:"O VERBO é a palavra que indica principalmente:",o:[
+   {t:"uma ação, estado ou desejo, ligada a um tempo.",ok:true,why:"Exato! Ex.: correr, ser, sonhar."},
+   {t:"o nome de um lugar.",ok:false,why:"Isso é um substantivo."},
+   {t:"a cor de um objeto.",ok:false,why:"Cor é dada por um adjetivo."},
+   {t:"a quantidade de coisas.",ok:false,why:"Quantidade é numeral."}]},
+ {tag:"Verbos",q:"Na frase “Amanhã ela viajará”, o verbo “viajará” está no tempo:",o:[
+   {t:"futuro (ainda vai acontecer)",ok:true,why:"“Amanhã” e a forma -ará mostram o futuro."},
+   {t:"passado (já aconteceu)",ok:false,why:"Passado seria “viajou”."},
+   {t:"presente (acontece agora)",ok:false,why:"Presente seria “viaja”."},
+   {t:"não é verbo",ok:false,why:"“Viajará” é sim um verbo."}]}
+];
+
+var order=[], state={sel:{},done:false};
+function rng(s){var x=s;return function(){x=(x*9301+49297)%233280;return x/233280;};}
+function shuffle(a,seed){var r=rng(seed),b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(r()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+function load(){var raw=null;try{raw=localStorage.getItem(KEY);}catch(e){raw=mem[KEY];}
+  if(raw){try{state=JSON.parse(raw);}catch(e){}} if(!state.sel)state.sel={};}
+function save(){var raw=JSON.stringify(state);try{localStorage.setItem(KEY,raw);}catch(e){mem[KEY]=raw;}
+  var d=new Date();document.getElementById('stamp').textContent="salvo "+d.toLocaleDateString('pt-BR')+" "+d.toLocaleTimeString('pt-BR').slice(0,5);}
+function build(){
+  order=[]; var qorder=shuffle(QS.map(function(_,i){return i;}),SEED);
+  var host=document.getElementById('quiz');host.innerHTML="";
+  qorder.forEach(function(qi,pos){
+    var Q=QS[qi]; var opts=shuffle(Q.o.map(function(_,k){return k;}),SEED+qi+7);
+    order.push({qi:qi,opts:opts});
+    var html='<div class="card" id="c'+pos+'"><div class="tag">'+Q.tag+'</div><div class="qh">'+(pos+1)+'. '+Q.q+'</div>';
+    opts.forEach(function(ok,oi){var letter=String.fromCharCode(65+oi);var chosen=(state.sel[pos]===oi)?" sel":"";
+      html+='<label class="opt'+chosen+'" id="o'+pos+'_'+oi+'" onclick="pick('+pos+','+oi+')"><b>'+letter+')</b> '+Q.o[ok].t+'<div class="why"></div></label>';});
+    html+='</div>'; host.innerHTML+=html;
+  });
+  for(var p in state.sel){var el=document.getElementById('o'+p+'_'+state.sel[p]);if(el)el.classList.add('sel');}
+  updateBar();
+}
+function pick(pos,oi){if(state.done)return;
+  for(var k=0;k<4;k++){var e=document.getElementById('o'+pos+'_'+k);if(e)e.classList.remove('sel');}
+  document.getElementById('o'+pos+'_'+oi).classList.add('sel');state.sel[pos]=oi;save();updateBar();}
+function updateBar(){var n=Object.keys(state.sel).length;
+  document.getElementById('bar').style.width=(n/QS.length*100)+"%";
+  document.getElementById('send').disabled=(n<QS.length)||state.done;}
+function corrigir(){
+  state.done=true;save();var acertos=0;
+  order.forEach(function(o,pos){var Q=QS[o.qi];var sel=state.sel[pos];
+    o.opts.forEach(function(ok,oi){var el=document.getElementById('o'+pos+'_'+oi);
+      el.classList.add('reveal');el.querySelector('.why').textContent=Q.o[ok].why;
+      if(Q.o[ok].ok)el.classList.add('right');
+      if(oi===sel&&!Q.o[ok].ok)el.classList.add('wrong');});
+    var chosen=o.opts[sel];if(chosen!==undefined&&Q.o[chosen].ok)acertos++;});
+  var pct=Math.round(acertos/QS.length*100);
+  var msg=pct>=80?"🏆 Mandou muito bem, inventor(a)!":pct>=50?"💪 Bom trabalho! Revise os erros.":"🌱 Vamos aprender juntos! Volte à Leitura Guiada.";
+  var stars=pct>=80?"⭐⭐⭐":pct>=50?"⭐⭐":"⭐";
+  document.getElementById('send').disabled=true;
+  var r=document.getElementById('result');
+  r.innerHTML='<div class="result"><h2>'+msg+'</h2><div class="stars">'+stars+'</div>'+
+    '<p style="font-size:1.3rem"><b>'+acertos+' de '+QS.length+'</b> ('+pct+'%)</p>'+
+    '<p>Veja acima as respostas certas em <span style="color:var(--ok)"><b>verde</b></span> e as explicações.</p>'+
+    '<button class="btn-y" onclick="location.href=\'resumo.html\'">🗺️ Ir para o Resumo</button></div>';
+  r.scrollIntoView({behavior:'smooth'});
+}
+function exportar(){var b=new Blob([JSON.stringify(state)],{type:"application/json"});var a=document.createElement('a');
+  a.href=URL.createObjectURL(b);a.download="quiz_portugues_3ano.json";a.click();toast("📥 Exportado!");}
+function importar(ev){var f=ev.target.files[0];if(!f)return;var r=new FileReader();
+  r.onload=function(){try{state=JSON.parse(r.result);save();location.reload();}catch(e){toast("❌ Arquivo inválido");}};r.readAsText(f);}
+function pedirZerar(){document.getElementById('modaltext').textContent="Quer mesmo apagar suas respostas do Quiz?";
+  document.getElementById('modalyes').onclick=doZerar;document.getElementById('modalbg').classList.add('show');}
+function fecharModal(){document.getElementById('modalbg').classList.remove('show');}
+function doZerar(){state={sel:{},done:false};save();fecharModal();location.reload();}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
+load(); build(); if(state.done){ corrigir(); }
+</script>
+</body>
+</html>
